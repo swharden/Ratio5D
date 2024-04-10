@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ratio5D.Core", "Ratio5D.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ratio5D.Tests", "Ratio5D.Tests\Ratio5D.Tests.csproj", "{4674EC95-761F-45F9-850D-49E2C5BBF54B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ratio5D.Gui", "Ratio5D.Gui\Ratio5D.Gui.csproj", "{02E8BABD-86EF-427C-9535-04B1AEB6B6E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4674EC95-761F-45F9-850D-49E2C5BBF54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4674EC95-761F-45F9-850D-49E2C5BBF54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4674EC95-761F-45F9-850D-49E2C5BBF54B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E8BABD-86EF-427C-9535-04B1AEB6B6E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02E8BABD-86EF-427C-9535-04B1AEB6B6E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02E8BABD-86EF-427C-9535-04B1AEB6B6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02E8BABD-86EF-427C-9535-04B1AEB6B6E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,7 +9,7 @@ public class Tests
         ts.ReferenceFiles.Should().NotBeEmpty();
         ts.TifFiles.Should().NotBeEmpty();
         ts.Sweeps.Should().Be(6);
-        ts.FrameCount.Should().Be(100);
+        ts.FramesPerSweep.Should().Be(100);
         ts.FramePeriod.Should().Be(0.067206472);
     }
 }
