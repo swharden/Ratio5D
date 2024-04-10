@@ -33,9 +33,8 @@ partial class Form1
         lblSweep = new Label();
         hsbFrame = new HScrollBar();
         lblFrame = new Label();
-        pictureBox2 = new PictureBox();
+        multiRoiSelect1 = new SWHarden.RoiSelect.WinForms.MultiRoiSelect();
         ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-        ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
         SuspendLayout();
         // 
         // pictureBox1
@@ -79,21 +78,19 @@ partial class Form1
         lblFrame.TabIndex = 4;
         lblFrame.Text = "Frame 0/0";
         // 
-        // pictureBox2
+        // multiRoiSelect1
         // 
-        pictureBox2.BackColor = SystemColors.ControlDark;
-        pictureBox2.Location = new Point(599, 42);
-        pictureBox2.Name = "pictureBox2";
-        pictureBox2.Size = new Size(512, 512);
-        pictureBox2.TabIndex = 5;
-        pictureBox2.TabStop = false;
+        multiRoiSelect1.Location = new Point(657, 42);
+        multiRoiSelect1.Name = "multiRoiSelect1";
+        multiRoiSelect1.Size = new Size(1132, 780);
+        multiRoiSelect1.TabIndex = 5;
         // 
         // Form1
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1460, 680);
-        Controls.Add(pictureBox2);
+        Controls.Add(multiRoiSelect1);
         Controls.Add(lblFrame);
         Controls.Add(lblSweep);
         Controls.Add(hsbFrame);
@@ -103,7 +100,6 @@ partial class Form1
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Form1";
         ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-        ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -115,5 +111,5 @@ partial class Form1
     private Label lblSweep;
     private HScrollBar hsbFrame;
     private Label lblFrame;
-    private PictureBox pictureBox2;
+    private SWHarden.RoiSelect.WinForms.MultiRoiSelect multiRoiSelect1;
 }

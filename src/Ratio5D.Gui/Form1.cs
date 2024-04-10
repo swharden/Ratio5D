@@ -10,7 +10,6 @@ public partial class Form1 : Form
     {
         InitializeComponent();
         pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-        pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
 
         hsbFrame.ValueChanged += (s, e) => UpdatePreviewImage();
         hsbSweep.ValueChanged += (s, e) => UpdatePreviewImage();
@@ -43,9 +42,7 @@ public partial class Form1 : Form
         byte[] image = TS.GetProjectedRedImage();
         using MemoryStream ms = new(image);
         Bitmap bmp = new(ms);
-        var old = pictureBox2.Image;
-        pictureBox2.Image = bmp;
-        old?.Dispose();
+        multiRoiSelect1.SetImage(bmp);
     }
 
     private void UpdatePreviewImage()
