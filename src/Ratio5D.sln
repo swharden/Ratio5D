@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ratio5D.Core", "Ratio5D.Core\Ratio5D.Core.csproj", "{7FE8CF17-D57E-4F8B-858B-62DD1DA79BDB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ratio5D.Tests", "Ratio5D.Tests\Ratio5D.Tests.csproj", "{4674EC95-761F-45F9-850D-49E2C5BBF54B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FE8CF17-D57E-4F8B-858B-62DD1DA79BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FE8CF17-D57E-4F8B-858B-62DD1DA79BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FE8CF17-D57E-4F8B-858B-62DD1DA79BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FE8CF17-D57E-4F8B-858B-62DD1DA79BDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4674EC95-761F-45F9-850D-49E2C5BBF54B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4674EC95-761F-45F9-850D-49E2C5BBF54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4674EC95-761F-45F9-850D-49E2C5BBF54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4674EC95-761F-45F9-850D-49E2C5BBF54B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED430D7F-6DCE-427F-9FA7-31A0452E216A}
+	EndGlobalSection
+EndGlobal
