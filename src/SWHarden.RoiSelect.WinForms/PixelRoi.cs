@@ -16,6 +16,10 @@ public class PixelRoi(int x1, int x2, int y1, int y2, string name = "")
     public int Right => Math.Max(X1, X2);
     public int Width => Right - Left;
     public int Height => Bottom - Top;
+    public bool IsSlected { get; set; } = false;
+
+    public RectangleF ScaledRect(float ScaleX, float ScaleY) =>
+        new(Left * ScaleX, Top * ScaleX, Width * ScaleY, Height * ScaleY);
 
     public override string ToString() => $"ROI {Name}: X={Left}, Y={Top}, W={Width}, H={Top}";
 }

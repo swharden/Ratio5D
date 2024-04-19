@@ -1,82 +1,69 @@
 ﻿namespace SWHarden.RoiSelect.WinForms;
 
-// TODO: draw using new bitmap (no image stretching)
-// TODO: mouse hit detection
-
 public partial class MultiRoiSelect : UserControl
 {
-    private Bitmap? OriginalImage = null;
+    public RoiBitmap? RoiBitmap = null;
     public readonly RoiPixelCollection RoiCollection = new();
 
     public MultiRoiSelect()
     {
         InitializeComponent();
-        listBox1.SelectedIndexChanged += (s, e) => UpdateImage();
+
+        listBox1.SelectedIndexChanged += (s, e) =>
+        {
+            for (int i = 0; i < listBox1.Items.Count; i++)
+                RoiCollection.Rois[i].IsSlected = listBox1.SelectedIndices.Contains(i);
+            UpdateImage();
+        };
+
+        SizeChanged += (s, e) =>
+        {
+            // TODO: support non-square images
+            int minEdge = Math.Min(panel1.Width, panel1.Height);
+            pictureBox1.Size = new(minEdge, minEdge);
+            pictureBox1.Location = new(0, 0);
+            UpdateImage();
+        };
+
         btnAdd.Click += (s, e) =>
         {
-            if (OriginalImage is null)
+            if (RoiBitmap is null)
                 return;
 
-            int x1 = Random.Shared.Next(OriginalImage.Width);
-            int x2 = Random.Shared.Next(OriginalImage.Width);
-            int y1 = Random.Shared.Next(OriginalImage.Height);
-            int y2 = Random.Shared.Next(OriginalImage.Height);
+            int x1 = Random.Shared.Next(RoiBitmap.OriginalWidth);
+            int x2 = Random.Shared.Next(RoiBitmap.OriginalWidth);
+            int y1 = Random.Shared.Next(RoiBitmap.OriginalHeight);
+            int y2 = Random.Shared.Next(RoiBitmap.OriginalHeight);
             RoiCollection.Add(x1, x2, y1, y2, $"ROI #{RoiCollection.Count + 1}");
             listBox1.Items.Add(RoiCollection.Rois.Last().Name);
             UpdateImage();
+        };
+
+        pictureBox1.MouseMove += (s, e) =>
+        {
+            if (RoiBitmap is null)
+                return;
+
+            Point pt = new(e.X, e.Y);
+            Cursor = RoiBitmap.IsMouseOver(pt) ? Cursors.Hand : Cursors.Arrow;
         };
     }
 
     public void SetImage(Bitmap bmp)
     {
-        var old = OriginalImage;
-        OriginalImage = bmp;
-        old?.Dispose();
+        RoiBitmap? oldBmp = RoiBitmap;
+        RoiBitmap = new(bmp, RoiCollection);
+        oldBmp?.Dispose();
         UpdateImage();
     }
 
     private void UpdateImage()
     {
-        if (OriginalImage is null)
+        if (RoiBitmap is null)
             return;
 
-        Bitmap bmp = new(OriginalImage);
-        using Graphics gfx = Graphics.FromImage(bmp);
-
-        for (int i = 0; i < RoiCollection.Count; i++)
-        {
-            PixelRoi roi = RoiCollection.Rois[i];
-            bool isSelected = listBox1.SelectedIndex == i;
-            DrawRoi(gfx, roi, isSelected);
-        }
-
-        var old = pictureBox1.Image;
-        pictureBox1.Image = bmp;
-        old?.Dispose();
-    }
-
-    private void DrawRoi(Graphics gfx, PixelRoi roi, bool isSelected)
-    {
-        gfx.DrawRectangle(Pens.Yellow, roi.Left, roi.Top, roi.Width, roi.Height);
-
-        if (!isSelected)
-            return;
-
-        Point[] corners = [
-            new(roi.Left, roi.Top),
-            new(roi.Right, roi.Top),
-            new(roi.Left, roi.Bottom),
-            new(roi.Right, roi.Bottom),
-        ];
-
-        foreach (Point corner in corners)
-        {
-            int radB = 3;
-            gfx.FillRectangle(Brushes.Black, corner.X - radB, corner.Y - radB, radB * 2, radB * 2);
-
-            int radW = 2;
-            gfx.FillRectangle(Brushes.White, corner.X - radW, corner.Y - radW, radW * 2, radW * 2);
-        }
-
+        Image? oldImage = pictureBox1.Image;
+        pictureBox1.Image = RoiBitmap.GetBitmap(pictureBox1.Size);
+        oldImage?.Dispose();
     }
 }
