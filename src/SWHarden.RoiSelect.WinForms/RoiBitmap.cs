@@ -2,24 +2,21 @@
 
 namespace SWHarden.RoiSelect.WinForms;
 
-public class RoiBitmap(Bitmap originalImage, RoiPixelCollection roiCollection) : IDisposable
+public class RoiBitmap(Bitmap originalImage) : IDisposable
 {
     private Bitmap OriginalImage { get; } = originalImage;
-    private RoiPixelCollection RoiCollection { get; } = roiCollection;
 
     private Size OutputImageSize;
 
     public int OriginalWidth => OriginalImage.Width;
     public int OriginalHeight => OriginalImage.Height;
 
-    float ScaleX => (float)OutputImageSize.Width / OriginalImage.Width;
-    float ScaleY => (float)OutputImageSize.Height / OriginalImage.Height;
+    public float ScaleX => (float)OutputImageSize.Width / OriginalImage.Width;
+    public float ScaleY => (float)OutputImageSize.Height / OriginalImage.Height;
 
-    const int CornerBlackRadius = 5;
-    const int CornerWhiteRadius = 3;
-    const int CornerMouseRadius = 7;
+    public bool HighlightPixels = true;
 
-    public Bitmap GetBitmap(Size size)
+    public Bitmap GetBitmap(Size size, DraggableRoiCollection roiCollection)
     {
         OutputImageSize = size;
 
@@ -31,68 +28,52 @@ public class RoiBitmap(Bitmap originalImage, RoiPixelCollection roiCollection) :
         Rectangle targetRect = new(0, 0, size.Width, size.Height);
         gfx.DrawImage(OriginalImage, targetRect);
 
-        for (int i = 0; i < RoiCollection.Count; i++)
+        Color highlightColor = Color.FromArgb(30, Color.Yellow);
+        using Brush highlightBrush = new SolidBrush(highlightColor);
+
+        foreach (DraggableRoi roi in roiCollection.ROIs)
         {
-            PixelRoi roi = RoiCollection.Rois[i];
-            DrawRoi(gfx, roi);
+            if (HighlightPixels && roi.IsSelected)
+            {
+                RectangleF[] rects = roi.GetPoints(ScaleX, ScaleY)
+                    .Select(pt => new RectangleF(pt.X * ScaleX, pt.Y * ScaleY, ScaleX, ScaleY))
+                    .ToArray();
+
+                gfx.FillRectangles(highlightBrush, rects);
+            }
+
+            gfx.DrawRectangle(Pens.Yellow, roi.GetRect());
+
+            if (roi.IsSelected)
+            {
+                foreach (PointF pt in roi.GetHandlePoints())
+                {
+                    DrawHandle(gfx, pt);
+                }
+            }
         }
 
         return bmp;
     }
 
-    private static PointF[] GetHandlePoints(RectangleF rect) =>
-        Enum.GetValues<Handle>().Select(x => x.GetPoint(rect)).ToArray();
-
-    private static RectangleF[] GetHandleRectangles(RectangleF rect, float radius) =>
-        Enum.GetValues<Handle>().Select(x => x.GetRect(rect, radius)).ToArray();
-
-    private void DrawRoi(Graphics gfx, PixelRoi roi)
+    private static void DrawHandle(Graphics gfx, PointF pt)
     {
-        RectangleF scaledRect = roi.ScaledRect(ScaleX, ScaleY);
+        const int CornerBlackRadius = 5;
+        const int CornerWhiteRadius = 3;
 
-        gfx.DrawRectangle(Pens.Yellow, scaledRect);
-
-        if (!roi.IsSlected)
-            return;
-
-        foreach (PointF corner in GetHandlePoints(scaledRect))
-        {
-            DrawHandle(gfx, corner);
-        }
-    }
-
-    private static void DrawHandle(Graphics gfx, PointF corner)
-    {
         gfx.FillRectangle(
             Brushes.Black,
-            corner.X - CornerBlackRadius,
-            corner.Y - CornerBlackRadius,
+            pt.X - CornerBlackRadius,
+            pt.Y - CornerBlackRadius,
             CornerBlackRadius * 2,
             CornerBlackRadius * 2);
 
         gfx.FillRectangle(
             Brushes.White,
-            corner.X - CornerWhiteRadius,
-            corner.Y - CornerWhiteRadius,
+            pt.X - CornerWhiteRadius,
+            pt.Y - CornerWhiteRadius,
             CornerWhiteRadius * 2,
             CornerWhiteRadius * 2);
-    }
-
-    public bool IsMouseOver(PointF pt)
-    {
-        foreach (PixelRoi selectedRoi in RoiCollection.Rois.Where(x => x.IsSlected))
-        {
-            RectangleF roiRect = selectedRoi.ScaledRect(ScaleX, ScaleY);
-
-            foreach (RectangleF cornerRect in GetHandleRectangles(roiRect, CornerMouseRadius))
-            {
-                if (cornerRect.Contains(pt))
-                    return true;
-            }
-
-        }
-
-        return false;
     }
 
     public void Dispose()

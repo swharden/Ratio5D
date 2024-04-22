@@ -80,16 +80,17 @@ partial class Form1
         // 
         // multiRoiSelect1
         // 
-        multiRoiSelect1.Location = new Point(657, 42);
+        multiRoiSelect1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        multiRoiSelect1.Location = new Point(657, 12);
         multiRoiSelect1.Name = "multiRoiSelect1";
-        multiRoiSelect1.Size = new Size(1132, 780);
+        multiRoiSelect1.Size = new Size(932, 632);
         multiRoiSelect1.TabIndex = 5;
         // 
         // Form1
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1460, 680);
+        ClientSize = new Size(1601, 656);
         Controls.Add(multiRoiSelect1);
         Controls.Add(lblFrame);
         Controls.Add(lblSweep);
