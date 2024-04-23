@@ -29,6 +29,13 @@ public class DraggableRoiCollection()
         oldBmp?.Dispose();
     }
 
+    public void SetImage(double[,] values)
+    {
+        RoiBitmap? oldBmp = RoiBitmap;
+        RoiBitmap = new(values);
+        oldBmp?.Dispose();
+    }
+
     public Bitmap? GetBitmap(Size size)
     {
         if (RoiBitmap is null)

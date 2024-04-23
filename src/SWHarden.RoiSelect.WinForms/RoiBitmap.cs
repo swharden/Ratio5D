@@ -2,9 +2,10 @@
 
 namespace SWHarden.RoiSelect.WinForms;
 
-public class RoiBitmap(Bitmap originalImage) : IDisposable
+public class RoiBitmap : IDisposable
 {
-    private Bitmap OriginalImage { get; } = originalImage;
+    private Bitmap OriginalImage { get; }
+    private ImageData ImageData { get; }
 
     private Size OutputImageSize;
 
@@ -15,6 +16,18 @@ public class RoiBitmap(Bitmap originalImage) : IDisposable
     public float ScaleY => (float)OutputImageSize.Height / OriginalImage.Height;
 
     public bool HighlightPixels = true;
+
+    public RoiBitmap(Bitmap bmp)
+    {
+        ImageData = new(bmp);
+        OriginalImage = bmp;
+    }
+
+    public RoiBitmap(double[,] values)
+    {
+        ImageData = new(values);
+        OriginalImage = ImageData.GetBitmap();
+    }
 
     public Bitmap GetBitmap(Size size, DraggableRoiCollection roiCollection)
     {

@@ -75,6 +75,12 @@ public partial class MultiRoiSelect : UserControl
         UpdateImage();
     }
 
+    public void SetImage(double[,] values)
+    {
+        RoiCollection.SetImage(values);
+        UpdateImage();
+    }
+
     private void UpdateImageIfNeeded()
     {
         if (!UpdateNeeded)
