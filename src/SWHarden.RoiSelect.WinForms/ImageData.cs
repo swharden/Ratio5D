@@ -49,7 +49,7 @@ public class ImageData
 
         for (int i = 0; i < Height; i++)
             for (int j = 0; j < Width; j++)
-                values[i, j] = Values[i, j] * 255 / valueMax ;
+                values[i, j] = Values[i, j] * max / valueMax ;
 
         return values;
     }

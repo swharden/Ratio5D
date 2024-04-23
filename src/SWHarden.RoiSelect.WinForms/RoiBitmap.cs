@@ -7,7 +7,7 @@ public class RoiBitmap : IDisposable
     private Bitmap OriginalImage { get; }
     private ImageData ImageData { get; }
 
-    private Size OutputImageSize;
+    public Size OutputImageSize;
 
     public int OriginalWidth => OriginalImage.Width;
     public int OriginalHeight => OriginalImage.Height;
@@ -52,7 +52,8 @@ public class RoiBitmap : IDisposable
                     .Select(pt => new RectangleF(pt.X * ScaleX, pt.Y * ScaleY, ScaleX, ScaleY))
                     .ToArray();
 
-                gfx.FillRectangles(highlightBrush, rects);
+                if (rects.Length > 0)
+                    gfx.FillRectangles(highlightBrush, rects);
             }
 
             gfx.DrawRectangle(Pens.Yellow, roi.GetRect());

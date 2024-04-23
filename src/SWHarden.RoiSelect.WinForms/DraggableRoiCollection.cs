@@ -59,15 +59,18 @@ public class DraggableRoiCollection()
 
     public bool MouseMove(float x, float y)
     {
+        if (RoiBitmap is null)
+            return false;
+
         foreach (DraggableRoi roi in ROIs)
         {
             if (!roi.IsSelected) // only interact with selected ROIs
                 continue;
 
             string before = roi.ToString();
-            roi.MouseMove(x, y);
+            roi.MouseMove(x, y, RoiBitmap.OutputImageSize);
 
-            if (roi.IsDraggingHandle && RoiBitmap is not null)
+            if (roi.IsDraggingHandle)
             {
                 roi.Snap(RoiBitmap.ScaleX, RoiBitmap.ScaleY);
             }

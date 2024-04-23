@@ -32,7 +32,6 @@ public class DraggableRoi(float x1, float x2, float y1, float y2)
     private readonly DraggableHorizontalEdge Y1 = new() { Position = y1 };
     private readonly DraggableHorizontalEdge Y2 = new() { Position = y2 };
 
-
     public override string ToString() => $"X=[{XMin},{XMax}], y=[{YMin},{YMax}]";
 
     public bool IsSelected { get; set; } = false;
@@ -85,18 +84,26 @@ public class DraggableRoi(float x1, float x2, float y1, float y2)
         HandleBeingDragged = GetHandle(new(x, y));
     }
 
-    public void MouseMove(float x, float y)
+    public void MouseMove(float x, float y, SizeF maxSize)
     {
         if (HandleBeingDragged is not null)
         {
+            x = Math.Max(0, x);
+            x = Math.Min(x, maxSize.Width);
+            y = Math.Max(0, y);
+            y = Math.Min(y, maxSize.Height);
+
             if (HandleBeingDragged.VerticalEdge is not null)
                 HandleBeingDragged.VerticalEdge.Position = x;
 
             if (HandleBeingDragged.HorizontalEdge is not null)
                 HandleBeingDragged.HorizontalEdge.Position = y;
 
+
             if (HandleBeingDragged.Body is not null)
             {
+                SizeF originalSize = new(Width, Height);
+
                 float dX = x - HandleBeingDragged.Body.StartDragPoint.X;
                 float dY = y - HandleBeingDragged.Body.StartDragPoint.Y;
 
@@ -104,6 +111,8 @@ public class DraggableRoi(float x1, float x2, float y1, float y2)
                 X2.Position = HandleBeingDragged.Body.StartDragRect.Right + dX;
                 Y1.Position = HandleBeingDragged.Body.StartDragRect.Top + dY;
                 Y2.Position = HandleBeingDragged.Body.StartDragRect.Bottom + dY;
+
+                MoveInBounds(originalSize, maxSize);
             }
 
             return;
@@ -127,6 +136,33 @@ public class DraggableRoi(float x1, float x2, float y1, float y2)
         if (Y1.Position == Y2.Position)
         {
             HandleBeingDragged?.HorizontalEdge?.MoveBy(scaleY);
+        }
+    }
+
+    private void MoveInBounds(SizeF originalSize, SizeF maxSize)
+    {
+        if (XMin < 0)
+        {
+            X1.Position = 0;
+            X2.Position = X1.Position + originalSize.Width;
+        }
+
+        if (XMax >= maxSize.Width)
+        {
+            X2.Position = maxSize.Width;
+            X1.Position = X2.Position - originalSize.Width + 1;
+        }
+
+        if (YMin < 0)
+        {
+            Y1.Position = 0;
+            Y2.Position = Y1.Position + originalSize.Height;
+        }
+
+        if (YMax >= maxSize.Height)
+        {
+            Y2.Position = maxSize.Height;
+            Y1.Position = Y2.Position - originalSize.Height + 1;
         }
     }
 
