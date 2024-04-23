@@ -1,12 +1,26 @@
 ﻿namespace SWHarden.RoiSelect.WinForms;
 
-public readonly struct DataRoi(int x1, int x2, int y1, int y2)
+// TODO: use primitive type for PixelRect
+public readonly struct DataRoi(Rectangle rect, double[,] values)
 {
-    public int XMin { get; } = Math.Min(x1, x2);
-    public int XMax { get; } = Math.Max(x1, x2);
-    public int YMin { get; } = Math.Min(y1, y2);
-    public int YMax { get; } = Math.Max(y1, y2);
+    Rectangle Rect { get; } = rect;
+    public double[,] Values { get; } = values;
+    public double[] ValuesFlat { get; } = Flatten(values);
 
-    public int Width => XMax - XMin + 1;
-    public int Height => YMax - XMin + 1;
+    public int Width => Rect.Width;
+    public int Height => Rect.Height;
+
+    public override string ToString() => $"{Rect} ({Values.Length} values)";
+
+    private static double[] Flatten(double[,] values)
+    {
+        int rows = values.GetLength(0);
+        int cols = values.GetLength(1);
+        double[] flat = new double[rows * cols];
+        int index = 0;
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                flat[index++] = values[i, j];
+        return flat;
+    }
 }

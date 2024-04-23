@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace SWHarden.RoiSelect.WinForms;
+﻿namespace SWHarden.RoiSelect.WinForms;
 
 public partial class MultiRoiSelect : UserControl
 {
@@ -10,7 +8,6 @@ public partial class MultiRoiSelect : UserControl
     public int RenderCount { get; private set; }
 
     public bool UpdateNeeded = false;
-    private void UpdateImage() => UpdateNeeded = true;
 
     public MultiRoiSelect()
     {
@@ -79,6 +76,11 @@ public partial class MultiRoiSelect : UserControl
     {
         RoiCollection.SetImage(values);
         UpdateImage();
+    }
+
+    private void UpdateImage()
+    {
+        UpdateNeeded = true;
     }
 
     private void UpdateImageIfNeeded()

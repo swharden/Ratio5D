@@ -23,15 +23,18 @@ public class ImageData
         Height = Values.GetLength(0);
     }
 
-    public double[,] GetValues(DataRoi roi)
+    public double[,] GetValues(int x1, int x2, int y1, int y2)
     {
-        double[,] values = new double[roi.Width, roi.Height];
+        int width = x2 - x1;
+        int height = y2 - y1;
 
-        for (int y = 0; y < roi.Width; y++)
+        double[,] values = new double[width, height];
+
+        for (int y = 0; y < width; y++)
         {
-            for (int x = 0; x <= roi.Height; x++)
+            for (int x = 0; x < height; x++)
             {
-                values[y, x] = Values[roi.YMin + y, roi.XMin + x];
+                values[y, x] = Values[y1 + y, x1 + x];
             }
         }
 
@@ -49,7 +52,7 @@ public class ImageData
 
         for (int i = 0; i < Height; i++)
             for (int j = 0; j < Width; j++)
-                values[i, j] = Values[i, j] * max / valueMax ;
+                values[i, j] = Values[i, j] * max / valueMax;
 
         return values;
     }

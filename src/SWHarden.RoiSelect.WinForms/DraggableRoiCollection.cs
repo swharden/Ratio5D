@@ -9,6 +9,10 @@ public class DraggableRoiCollection()
     public bool IsRoiUnderMouse => RoiUnderMouse is not null;
     public bool IsDraggingHandle => RoiUnderMouse is not null && RoiUnderMouse.IsDraggingHandle;
     public bool SnapToPixels { get; set; } = true;
+
+    
+    public EventHandler<DataRoi> SelectedRoiChanged = delegate { };
+
     public DraggableRoi GetRandomRoi()
     {
         if (RoiBitmap is null)
@@ -79,7 +83,16 @@ public class DraggableRoiCollection()
             {
                 RoiUnderMouse = roi;
                 string after = roi.ToString();
-                return before != after;
+                bool roiChanged = before != after;
+
+                if (roiChanged)
+                {
+                    RectangleF dataRect = roi.GetRect();
+                    DataRoi roi2 = RoiBitmap.GetDataRoi(dataRect);
+                    SelectedRoiChanged.Invoke(this, roi2);
+                }
+
+                return roiChanged;
             }
         }
 

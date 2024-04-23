@@ -1,4 +1,6 @@
-﻿namespace Ratio5D.Gui;
+﻿using SWHarden.RoiSelect.WinForms;
+
+namespace Ratio5D.Gui;
 
 public partial class RoiTest : Form
 {
@@ -17,5 +19,9 @@ public partial class RoiTest : Form
 
 
         multiRoiSelect1.SetImage(values);
+        multiRoiSelect1.RoiCollection.SelectedRoiChanged += (object? sender, DataRoi roi) =>
+        {
+            Text = $"{DateTime.Now.Ticks} {roi} AVG={roi.ValuesFlat.Average()}";
+        };
     }
 }

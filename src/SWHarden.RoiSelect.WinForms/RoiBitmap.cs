@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace SWHarden.RoiSelect.WinForms;
 
@@ -94,5 +95,19 @@ public class RoiBitmap : IDisposable
     {
         OriginalImage.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    public DataRoi GetDataRoi(RectangleF rect)
+    {
+        int x1 = (int)(rect.Left / ScaleX);
+        int x2 = (int)(rect.Right / ScaleX);
+        int width = x2 - x1;
+        int y1 = (int)(rect.Top / ScaleY);
+        int y2 = (int)(rect.Bottom / ScaleY);
+        int height = y2 - y1;
+        Rectangle rect2 = new(x1, y1, width, height);
+
+        double[,] values = ImageData.GetValues(x1, x2, y1, y2);
+        return new DataRoi(rect2, values);
     }
 }
