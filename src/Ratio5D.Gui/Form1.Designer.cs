@@ -30,17 +30,22 @@ partial class Form1
     {
         pictureBox1 = new PictureBox();
         hsbSweep = new HScrollBar();
-        lblSweep = new Label();
         hsbFrame = new HScrollBar();
-        lblFrame = new Label();
         multiRoiSelect1 = new SWHarden.RoiSelect.WinForms.MultiRoiSelect();
+        progressBar1 = new ProgressBar();
+        gbSweep = new GroupBox();
+        gbFrame = new GroupBox();
+        formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+        formsPlot2 = new ScottPlot.WinForms.FormsPlot();
         ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+        gbSweep.SuspendLayout();
+        gbFrame.SuspendLayout();
         SuspendLayout();
         // 
         // pictureBox1
         // 
         pictureBox1.BackColor = SystemColors.ControlDark;
-        pictureBox1.Location = new Point(40, 42);
+        pictureBox1.Location = new Point(29, 63);
         pictureBox1.Name = "pictureBox1";
         pictureBox1.Size = new Size(512, 512);
         pictureBox1.TabIndex = 0;
@@ -48,69 +53,100 @@ partial class Form1
         // 
         // hsbSweep
         // 
-        hsbSweep.Location = new Point(40, 557);
+        hsbSweep.Dock = DockStyle.Fill;
+        hsbSweep.Location = new Point(3, 27);
         hsbSweep.Name = "hsbSweep";
-        hsbSweep.Size = new Size(512, 39);
+        hsbSweep.Size = new Size(506, 39);
         hsbSweep.TabIndex = 1;
-        // 
-        // lblSweep
-        // 
-        lblSweep.AutoSize = true;
-        lblSweep.Location = new Point(555, 571);
-        lblSweep.Name = "lblSweep";
-        lblSweep.Size = new Size(96, 25);
-        lblSweep.TabIndex = 2;
-        lblSweep.Text = "Sweep 0/0";
         // 
         // hsbFrame
         // 
-        hsbFrame.Location = new Point(40, 602);
+        hsbFrame.Dock = DockStyle.Fill;
+        hsbFrame.Location = new Point(3, 27);
         hsbFrame.Name = "hsbFrame";
-        hsbFrame.Size = new Size(512, 39);
+        hsbFrame.Size = new Size(506, 39);
         hsbFrame.TabIndex = 3;
-        // 
-        // lblFrame
-        // 
-        lblFrame.AutoSize = true;
-        lblFrame.Location = new Point(555, 616);
-        lblFrame.Name = "lblFrame";
-        lblFrame.Size = new Size(93, 25);
-        lblFrame.TabIndex = 4;
-        lblFrame.Text = "Frame 0/0";
         // 
         // multiRoiSelect1
         // 
-        multiRoiSelect1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        multiRoiSelect1.Location = new Point(657, 12);
+        multiRoiSelect1.Location = new Point(547, 12);
         multiRoiSelect1.Name = "multiRoiSelect1";
-        multiRoiSelect1.Size = new Size(932, 632);
+        multiRoiSelect1.Size = new Size(1017, 717);
         multiRoiSelect1.TabIndex = 5;
+        // 
+        // progressBar1
+        // 
+        progressBar1.Location = new Point(29, 12);
+        progressBar1.Name = "progressBar1";
+        progressBar1.Size = new Size(512, 34);
+        progressBar1.TabIndex = 6;
+        // 
+        // gbSweep
+        // 
+        gbSweep.Controls.Add(hsbSweep);
+        gbSweep.Location = new Point(29, 581);
+        gbSweep.Name = "gbSweep";
+        gbSweep.Size = new Size(512, 69);
+        gbSweep.TabIndex = 7;
+        gbSweep.TabStop = false;
+        gbSweep.Text = "groupBox1";
+        // 
+        // gbFrame
+        // 
+        gbFrame.Controls.Add(hsbFrame);
+        gbFrame.Location = new Point(29, 660);
+        gbFrame.Name = "gbFrame";
+        gbFrame.Size = new Size(512, 69);
+        gbFrame.TabIndex = 8;
+        gbFrame.TabStop = false;
+        gbFrame.Text = "groupBox1";
+        // 
+        // formsPlot1
+        // 
+        formsPlot1.DisplayScale = 1.5F;
+        formsPlot1.Location = new Point(1570, 12);
+        formsPlot1.Name = "formsPlot1";
+        formsPlot1.Size = new Size(628, 310);
+        formsPlot1.TabIndex = 9;
+        // 
+        // formsPlot2
+        // 
+        formsPlot2.DisplayScale = 1.5F;
+        formsPlot2.Location = new Point(1570, 337);
+        formsPlot2.Name = "formsPlot2";
+        formsPlot2.Size = new Size(628, 310);
+        formsPlot2.TabIndex = 10;
         // 
         // Form1
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1601, 656);
+        ClientSize = new Size(2210, 747);
+        Controls.Add(formsPlot2);
+        Controls.Add(formsPlot1);
+        Controls.Add(gbFrame);
+        Controls.Add(gbSweep);
+        Controls.Add(progressBar1);
         Controls.Add(multiRoiSelect1);
-        Controls.Add(lblFrame);
-        Controls.Add(lblSweep);
-        Controls.Add(hsbFrame);
-        Controls.Add(hsbSweep);
         Controls.Add(pictureBox1);
         Name = "Form1";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Form1";
         ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+        gbSweep.ResumeLayout(false);
+        gbFrame.ResumeLayout(false);
         ResumeLayout(false);
-        PerformLayout();
     }
 
     #endregion
 
     private PictureBox pictureBox1;
     private HScrollBar hsbSweep;
-    private Label lblSweep;
     private HScrollBar hsbFrame;
-    private Label lblFrame;
     private SWHarden.RoiSelect.WinForms.MultiRoiSelect multiRoiSelect1;
+    private ProgressBar progressBar1;
+    private GroupBox gbSweep;
+    private GroupBox gbFrame;
+    private ScottPlot.WinForms.FormsPlot formsPlot1;
+    private ScottPlot.WinForms.FormsPlot formsPlot2;
 }

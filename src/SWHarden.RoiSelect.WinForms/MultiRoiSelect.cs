@@ -32,10 +32,17 @@ public partial class MultiRoiSelect : UserControl
 
         btnAdd.Click += (s, e) =>
         {
+            if (RoiCollection is null || RoiCollection.RoiBitmap is null)
+                return;
+
             DraggableRoi roi = RoiCollection.GetRandomRoi();
             RoiCollection.ROIs.Add(roi);
             listBox1.Items.Add($"ROI #{RoiCollection.ROIs.Count}");
             listBox1.SelectedIndex = listBox1.Items.Count - 1;
+
+            RectangleF dataRect2 = new(1, 1, 1, 1);
+            DataRoi roi2 = RoiCollection.RoiBitmap.GetDataRoi(dataRect2);
+            RoiCollection.SelectedRoiChanged.Invoke(this, roi2);
         };
 
         btnDelete.Click += (s, e) =>
