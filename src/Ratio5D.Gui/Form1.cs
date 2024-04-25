@@ -1,6 +1,7 @@
 using Ratio5D.Core;
 using ScottPlot;
 using SWHarden.RoiSelect.WinForms;
+using System.Diagnostics;
 
 namespace Ratio5D.Gui;
 
@@ -25,18 +26,24 @@ public partial class Form1 : Form
         multiRoiSelect1.RoiCollection.SelectedRoiChanged += (s, e) => AnalyzeRoi(e);
     }
 
+    DateTime LastProgressUpdate;
     void LoadingUpdate(int value, int max, string message)
     {
+        bool intermediateValue = value > 0 && value < max;
+        if (intermediateValue && (DateTime.Now - LastProgressUpdate).TotalSeconds < .1)
+            return;
+
         Text = $"{value} of {max} {message}";
         progressBar1.Maximum = max;
         progressBar1.Value = value;
-        Application.DoEvents();
+        LastProgressUpdate = DateTime.Now;
     }
 
     private void LoadFolder(string path)
     {
+        Stopwatch sw = Stopwatch.StartNew();
         progressBar1.Visible = true;
-        TS = new TSeriesFolder(path, LoadingUpdate, fast: true);
+        TS = new TSeriesFolder(path, LoadingUpdate);
 
         hsbFrame.Minimum = 0;
         hsbFrame.Value = 0;
@@ -52,7 +59,7 @@ public partial class Form1 : Form
         UpdatePreviewImage();
         LoadingUpdate(60, 100, "Updating projection image...");
         UpdateProjectedImage();
-        LoadingUpdate(100, 100, "Loading complete.");
+        LoadingUpdate(100, 100, $"Loading completed in {sw.Elapsed.TotalSeconds:N2} seconds");
         progressBar1.Visible = false;
     }
 

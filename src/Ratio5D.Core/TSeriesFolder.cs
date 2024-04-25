@@ -16,7 +16,7 @@ public class TSeriesFolder
 
     private SciTIF.Image[] Images { get; }
 
-    public TSeriesFolder(string path, Action<int, int, string>? imageLoadedAction = null, bool fast = false)
+    public TSeriesFolder(string path, Action<int, int, string>? imageLoadedAction = null)
     {
         ImageLoadedAction = imageLoadedAction;
         Path = path;
@@ -33,8 +33,7 @@ public class TSeriesFolder
         Sweeps = GetSequenceCount(doc);
         FramesPerSweep = GetFrameCount(doc);
         FramePeriod = GetFramePeriod(doc);
-
-        Images = (fast && HasSavedImageData()) ? LoadImageData() : LoadImageTiffs();
+        Images = LoadImageTiffs();
         ImageLoadedAction?.Invoke(TifFiles.Length, TifFiles.Length, $"Loaded {TifFiles.Length} images");
     }
 
@@ -66,32 +65,6 @@ public class TSeriesFolder
 
         Console.WriteLine($"Writing {saveAs} ({bytes.Length / 1000:N0} kB)...");
         File.WriteAllBytes(saveAs, bytes);
-    }
-
-    public SciTIF.Image[] LoadImageData()
-    {
-        ImageLoadedAction?.Invoke(0, 0, "Loading images from saved data file...");
-
-        string saveAs = System.IO.Path.Join(ReferencePath, "ImageData.bin");
-        byte[] allValues = File.ReadAllBytes(saveAs);
-
-        SciTIF.TifFile firstTif = new(TifFiles.First());
-        SciTIF.Image firstImage = firstTif.GetImage();
-        int width = firstImage.Width;
-        int height = firstImage.Height;
-        int offsetPerImage = firstImage.Values.Length * sizeof(double);
-
-        int imageCount = TifFiles.Length;
-        SciTIF.Image[] images = new SciTIF.Image[imageCount];
-
-        for (int i = 0; i < imageCount; i++)
-        {
-            images[i] = new SciTIF.Image(width, height);
-            int offset = offsetPerImage * i;
-            Buffer.BlockCopy(allValues, offset, images[i].Values, 0, offsetPerImage);
-        }
-
-        return images;
     }
 
     public SciTIF.Image[] LoadImageTiffs()
