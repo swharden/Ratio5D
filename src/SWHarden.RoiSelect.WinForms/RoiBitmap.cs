@@ -12,6 +12,7 @@ public class RoiBitmap : IDisposable
 
     public int OriginalWidth => OriginalImage.Width;
     public int OriginalHeight => OriginalImage.Height;
+    public Size OriginalSize => new(OriginalWidth, OriginalHeight);
 
     public float ScaleX => (float)OutputImageSize.Width / OriginalImage.Width;
     public float ScaleY => (float)OutputImageSize.Height / OriginalImage.Height;

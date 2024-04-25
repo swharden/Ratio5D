@@ -10,8 +10,22 @@ public class DraggableRoiCollection()
     public bool IsDraggingHandle => RoiUnderMouse is not null && RoiUnderMouse.IsDraggingHandle;
     public bool SnapToPixels { get; set; } = true;
 
-    
+
     public EventHandler<DataRoi> SelectedRoiChanged = delegate { };
+
+    public DraggableRoi GetCenterRoi(SizeF controlSize, SizeF originalImageSize)
+    {
+        float left = (int)(controlSize.Width * .33);
+        float right = (int)(controlSize.Width * .66);
+        float top = (int)(controlSize.Height * .33);
+        float bottom = (int)(controlSize.Height * .66);
+        DraggableRoi roi = new(left, right, top, bottom);
+
+        float scaleX = controlSize.Width / originalImageSize.Width;
+        float scaleY = controlSize.Height / originalImageSize.Height;
+        roi.Snap(scaleX, scaleY);
+        return roi;
+    }
 
     public DraggableRoi GetRandomRoi()
     {

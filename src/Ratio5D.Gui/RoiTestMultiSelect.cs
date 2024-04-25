@@ -2,9 +2,9 @@
 
 namespace Ratio5D.Gui;
 
-public partial class RoiTest : Form
+public partial class RoiTestMultiSelect : Form
 {
-    public RoiTest()
+    public RoiTestMultiSelect()
     {
         InitializeComponent();
 

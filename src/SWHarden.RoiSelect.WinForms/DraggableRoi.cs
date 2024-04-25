@@ -1,4 +1,6 @@
-﻿namespace SWHarden.RoiSelect.WinForms;
+﻿using System.Data;
+
+namespace SWHarden.RoiSelect.WinForms;
 
 public class DraggableRoi(float x1, float x2, float y1, float y2)
 {
@@ -52,6 +54,15 @@ public class DraggableRoi(float x1, float x2, float y1, float y2)
     public bool IsHandleUnderMouse => HandleUnderMouse is not null;
 
     public RectangleF GetRect() => new(XMin, YMin, Width, Height);
+
+    public DataRoi GetDataRoi(SizeF controlSize, SizeF originalImageSize)
+    {
+        float scaleX = controlSize.Width / originalImageSize.Width;
+        float scaleY = controlSize.Height / originalImageSize.Height;
+        Rectangle rect = new((int)(XMin / scaleX), (int)(YMin / scaleY), (int)(Width / scaleX), (int)(Height / scaleY));
+        double[,] values = new double[0, 0];
+        return new DataRoi(rect, values);
+    }
 
     public Cursor? GetCursor(float x, float y)
     {

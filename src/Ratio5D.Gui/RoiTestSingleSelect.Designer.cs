@@ -1,6 +1,6 @@
 ﻿namespace Ratio5D.Gui;
 
-partial class RoiTest
+partial class RoiTestSingleSelect
 {
     /// <summary>
     /// Required designer variable.
@@ -28,39 +28,30 @@ partial class RoiTest
     /// </summary>
     private void InitializeComponent()
     {
-        multiRoiSelect1 = new SWHarden.RoiSelect.WinForms.MultiRoiSelect();
-        formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+        singleRoiSelect1 = new SWHarden.RoiSelect.WinForms.SingleRoiSelect();
         SuspendLayout();
         // 
-        // multiRoiSelect1
+        // singleRoiSelect1
         // 
-        multiRoiSelect1.Location = new Point(0, 0);
-        multiRoiSelect1.Name = "multiRoiSelect1";
-        multiRoiSelect1.Size = new Size(1030, 748);
-        multiRoiSelect1.TabIndex = 0;
+        singleRoiSelect1.BackColor = SystemColors.ControlDark;
+        singleRoiSelect1.Dock = DockStyle.Fill;
+        singleRoiSelect1.Location = new Point(0, 0);
+        singleRoiSelect1.Name = "singleRoiSelect1";
+        singleRoiSelect1.Size = new Size(800, 450);
+        singleRoiSelect1.TabIndex = 0;
         // 
-        // formsPlot1
-        // 
-        formsPlot1.DisplayScale = 1.5F;
-        formsPlot1.Location = new Point(1036, 12);
-        formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(676, 724);
-        formsPlot1.TabIndex = 1;
-        // 
-        // RoiTest
+        // RoiTestSingleSelect
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1724, 748);
-        Controls.Add(formsPlot1);
-        Controls.Add(multiRoiSelect1);
-        Name = "RoiTest";
-        Text = "RoiTest";
+        ClientSize = new Size(800, 450);
+        Controls.Add(singleRoiSelect1);
+        Name = "RoiTestSingleSelect";
+        Text = "RoiTestSingleSelect";
         ResumeLayout(false);
     }
 
     #endregion
 
-    private SWHarden.RoiSelect.WinForms.MultiRoiSelect multiRoiSelect1;
-    private ScottPlot.WinForms.FormsPlot formsPlot1;
+    private SWHarden.RoiSelect.WinForms.SingleRoiSelect singleRoiSelect1;
 }
