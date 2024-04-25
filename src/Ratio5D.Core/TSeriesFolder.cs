@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Drawing;
+using System.Xml.Linq;
 
 namespace Ratio5D.Core;
 
@@ -140,7 +141,7 @@ public class TSeriesFolder
         return rgb.GetBitmapBytes();
     }
 
-    public byte[] GetProjectedRedImage()
+    public byte[] GetProjectedRedBitmapBytes()
     {
         List<SciTIF.Image> images = [];
         for (int sweep = 0; sweep < Sweeps; sweep++)
@@ -156,6 +157,14 @@ public class TSeriesFolder
 
         double scaleBy = 1 / 32.0; // difference between 8-bit and 13-bit
         return stack.ProjectMean().ScaledBy(0, scaleBy).GetBitmapBytes();
+    }
+
+    public Bitmap GetProjectedRedBitmap()
+    {
+        byte[] bytes = GetProjectedRedBitmapBytes();
+        using MemoryStream ms = new(bytes);
+        Bitmap bmp = new(ms);
+        return bmp;
     }
 
     // TODO: add an ROI dimension

@@ -8,12 +8,12 @@ public class AfuData5D(int sweeps, int framesPerSweep, double framePeriod)
     public int FramesPerSweep => Reds.GetLength(1);
     public double FramePeriod = framePeriod;
 
-    public DffCurve[] GetSweeps(TimeRange baseline) =>
+    public DffCurve[] GetSweeps(IndexRange baseline) =>
         Enumerable.Range(0, Sweeps)
         .Select(x => GetSweep(x, baseline))
         .ToArray();
 
-    public DffCurve GetSweep(int sweep, TimeRange baseline) =>
+    public DffCurve GetSweep(int sweep, IndexRange baseline) =>
         new(GetRow(Reds, sweep), GetRow(Greens, sweep), FramePeriod, baseline);
 
     static double[] GetRow(double[,] data, int row)

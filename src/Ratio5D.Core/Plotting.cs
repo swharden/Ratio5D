@@ -1,13 +1,12 @@
 ﻿using ScottPlot;
+using System.Runtime.Intrinsics.X86;
 
 namespace Ratio5D.Core;
 
 public static class Plotting
 {
-    public static Plot PlotAfuCurves(DffCurve[] sweeps)
+    public static void PlotAfuCurves(Plot plot, DffCurve[] sweeps, IndexRange baseline, IndexRange measure)
     {
-        Plot plot = new();
-
         foreach (DffCurve sweep in sweeps)
         {
             var sig1 = plot.Add.Signal(sweep.RedRaw);
@@ -22,13 +21,17 @@ public static class Plotting
         plot.YLabel("Raw PMT Values (AFU)");
         plot.XLabel("Time (seconds)");
 
-        return plot;
+        (double b1, double b2) = baseline.GetTimes(sweeps.First().Period);
+        var hspan1 = plot.Add.HorizontalSpan(b1, b2);
+        hspan1.FillColor = Colors.Black.WithAlpha(.1);
+
+        (double m1, double m2) = measure.GetTimes(sweeps.First().Period);
+        var hspan2 = plot.Add.HorizontalSpan(m1, m2);
+        hspan2.FillColor = Colors.Black.WithAlpha(.1);
     }
 
-    public static Plot PlotDffCurves(DffCurve[] sweeps, TimeRange baseline, TimeRange measure)
+    public static void PlotDffCurves(Plot plot, DffCurve[] sweeps, IndexRange baseline, IndexRange measure)
     {
-        Plot plot = new();
-
         foreach (DffCurve sweep in sweeps)
         {
             var sig3 = plot.Add.Signal(sweep.DFFs);
@@ -39,27 +42,24 @@ public static class Plotting
         plot.YLabel("ΔF/F (%)");
         plot.XLabel("Time (seconds)");
 
-        var hspan1 = plot.Add.HorizontalSpan(baseline.Start, baseline.End);
+        (double b1, double b2) = baseline.GetTimes(sweeps.First().Period);
+        var hspan1 = plot.Add.HorizontalSpan(b1, b2);
         hspan1.FillColor = Colors.Black.WithAlpha(.1);
 
-        var hspan2 = plot.Add.HorizontalSpan(measure.Start, measure.End);
+        (double m1, double m2) = measure.GetTimes(sweeps.First().Period);
+        var hspan2 = plot.Add.HorizontalSpan(m1, m2);
         hspan2.FillColor = Colors.Black.WithAlpha(.1);
-
-        return plot;
     }
 
-    public static Plot PlotMeans(DffCurve[] sweeps, TimeRange measureRange)
+    public static void PlotMeans(Plot plot, DffCurve[] sweeps, IndexRange measureRange)
     {
         double[] xs = ScottPlot.Generate.Consecutive(sweeps.Length);
         double[] meansBySweep = sweeps
             .Select(x => x.GetMean(measureRange))
             .ToArray();
 
-        Plot plot = new();
         plot.Add.Scatter(xs, meansBySweep);
         plot.YLabel("Mean ΔF/F (%)");
         plot.XLabel("Time (seconds)");
-
-        return plot;
     }
 }

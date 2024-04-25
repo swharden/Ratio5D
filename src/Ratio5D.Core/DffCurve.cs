@@ -6,9 +6,9 @@ public class DffCurve
     public double[] RedRaw { get; }
     public double[] GreenRaw { get; }
     public double[] DFFs { get; }
-    public TimeRange Baseline { get; }
+    public IndexRange Baseline { get; }
 
-    public DffCurve(double[] redAfus, double[] greenAfus, double period, TimeRange baseline)
+    public DffCurve(double[] redAfus, double[] greenAfus, double period, IndexRange baseline)
     {
         RedRaw = redAfus;
         GreenRaw = greenAfus;
@@ -19,23 +19,18 @@ public class DffCurve
         for (int i = 0; i < RedRaw.Length; i++)
             DFFs[i] = GreenRaw[i] / RedRaw[i];
 
-        (int i1, int i2) = baseline.GetIndexes(period);
-        double baselineMean = DFFs[i1..i2].Average();
+        double baselineMean = DFFs[baseline.Start..baseline.End].Average();
         for (int i = 0; i < DFFs.Length; i++)
             DFFs[i] = (DFFs[i] - baselineMean) / baselineMean * 100;
     }
 
-    public double GetMean(TimeRange range)
+    public double GetMean(IndexRange range)
     {
-        (int i1, int i2) = range.GetIndexes(Period);
-        return DFFs[i1..i2].Average();
+        return DFFs[range.Start..range.End].Average();
     }
 
-    public double GetMax(double baseline1 = 0, double baseline2 = 1)
+    public double GetMax(IndexRange range)
     {
-        int i1 = (int)(baseline1 / Period);
-        int i2 = (int)(baseline2 / Period);
-        if (i1 == i2) i2 += 2;
-        return DFFs[i1..i2].Max();
+        return DFFs[range.Start..range.End].Max();
     }
 }
