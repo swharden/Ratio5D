@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="SciTIF" Version="0.1.4" />
+    <PackageReference Include="ScottPlot" Version="5.0.28" />
   </ItemGroup>
 
 </Project>

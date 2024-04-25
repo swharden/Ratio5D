@@ -157,4 +157,23 @@ public class TSeriesFolder
         double scaleBy = 1 / 32.0; // difference between 8-bit and 13-bit
         return stack.ProjectMean().ScaledBy(0, scaleBy).GetBitmapBytes();
     }
+
+    // TODO: add an ROI dimension
+    public AfuData5D GetAfuData()
+    {
+        AfuData5D afuData = new(Sweeps, FramesPerSweep, FramePeriod);
+
+        for (int sweep = 0; Sweeps > sweep; sweep++)
+        {
+            for (int frame = 0; frame < FramesPerSweep; frame++)
+            {
+                SciTIF.Image redImage = GetRedImage(sweep, frame);
+                SciTIF.Image greenImage = GetGreenImage(sweep, frame);
+                afuData.Reds[sweep, frame] = redImage.Values.Average();
+                afuData.Greens[sweep, frame] = greenImage.Values.Average();
+            }
+        }
+
+        return afuData;
+    }
 }
