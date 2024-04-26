@@ -41,7 +41,7 @@ partial class Form2
         formsPlot3 = new ScottPlot.WinForms.FormsPlot();
         groupBox3 = new GroupBox();
         lblFolder = new Label();
-        singleRoiSelect1 = new SWHarden.RoiSelect.WinForms.SingleRoiSelect();
+        roiSelect = new SWHarden.RoiSelect.WinForms.SingleRoiSelect();
         ((System.ComponentModel.ISupportInitialize)nudB1).BeginInit();
         ((System.ComponentModel.ISupportInitialize)nudB2).BeginInit();
         groupBox1.SuspendLayout();
@@ -184,17 +184,17 @@ partial class Form2
         // 
         // singleRoiSelect1
         // 
-        singleRoiSelect1.Location = new Point(12, 85);
-        singleRoiSelect1.Name = "singleRoiSelect1";
-        singleRoiSelect1.Size = new Size(965, 965);
-        singleRoiSelect1.TabIndex = 14;
+        roiSelect.Location = new Point(12, 85);
+        roiSelect.Name = "singleRoiSelect1";
+        roiSelect.Size = new Size(965, 965);
+        roiSelect.TabIndex = 14;
         // 
         // Form2
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1548, 1069);
-        Controls.Add(singleRoiSelect1);
+        Controls.Add(roiSelect);
         Controls.Add(groupBox3);
         Controls.Add(formsPlot3);
         Controls.Add(formsPlot2);
@@ -231,5 +231,5 @@ partial class Form2
     private ScottPlot.WinForms.FormsPlot formsPlot3;
     private GroupBox groupBox3;
     private Label lblFolder;
-    private SWHarden.RoiSelect.WinForms.SingleRoiSelect singleRoiSelect1;
+    private SWHarden.RoiSelect.WinForms.SingleRoiSelect roiSelect;
 }

@@ -13,13 +13,11 @@ public class DraggableRoiCollection()
 
     public EventHandler<DataRoi> SelectedRoiChanged = delegate { };
 
-    public DraggableRoi GetCenterRoi(SizeF controlSize, SizeF originalImageSize)
+    public DraggableRoi GetCenterRoi(SizeF controlSize, SizeF originalImageSize, int radius)
     {
-        float left = (int)(controlSize.Width * .33);
-        float right = (int)(controlSize.Width * .66);
-        float top = (int)(controlSize.Height * .33);
-        float bottom = (int)(controlSize.Height * .66);
-        DraggableRoi roi = new(left, right, top, bottom);
+        float centerX = controlSize.Width / 2;
+        float centerY = controlSize.Height / 2;
+        DraggableRoi roi = new(centerX - radius, centerX + radius, centerY - radius, centerY + radius);
 
         float scaleX = controlSize.Width / originalImageSize.Width;
         float scaleY = controlSize.Height / originalImageSize.Height;

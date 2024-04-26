@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using SWHarden.RoiSelect.WinForms;
+using System.Drawing;
 using System.Xml.Linq;
 
 namespace Ratio5D.Core;
@@ -167,8 +168,7 @@ public class TSeriesFolder
         return bmp;
     }
 
-    // TODO: add an ROI dimension
-    public AfuData5D GetAfuData()
+    public AfuData5D GetAfuData(DataRoi roi)
     {
         AfuData5D afuData = new(Sweeps, FramesPerSweep, FramePeriod);
 
@@ -178,11 +178,27 @@ public class TSeriesFolder
             {
                 SciTIF.Image redImage = GetRedImage(sweep, frame);
                 SciTIF.Image greenImage = GetGreenImage(sweep, frame);
-                afuData.Reds[sweep, frame] = redImage.Values.Average();
-                afuData.Greens[sweep, frame] = greenImage.Values.Average();
+
+                double[] redRoiValues = GetValues(redImage, roi);
+                double[] greenRoiValues = GetValues(greenImage, roi);
+
+                afuData.Reds[sweep, frame] = redRoiValues.Average();
+                afuData.Greens[sweep, frame] = greenRoiValues.Average();
             }
         }
 
         return afuData;
+    }
+
+    private static double[] GetValues(SciTIF.Image image, DataRoi roi)
+    {
+        double[] values2 = new double[roi.Rect.Height * roi.Rect.Width];
+
+        int i = 0;
+        for (int dy = 0; dy < roi.Rect.Height; dy++)
+            for (int dx = 0; dx < roi.Rect.Width; dx++)
+                values2[i++] = image.GetPixel(roi.Rect.Left + dx, roi.Rect.Top + dy);
+
+        return values2;
     }
 }

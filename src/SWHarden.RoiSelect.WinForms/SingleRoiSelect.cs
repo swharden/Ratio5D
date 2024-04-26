@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace SWHarden.RoiSelect.WinForms;
+﻿namespace SWHarden.RoiSelect.WinForms;
 
 public partial class SingleRoiSelect : UserControl
 {
@@ -44,7 +42,7 @@ public partial class SingleRoiSelect : UserControl
             return;
 
         RoiCollection.ROIs.Clear();
-        DraggableRoi roi = RoiCollection.GetCenterRoi(pictureBox1.Size, originalSize);
+        DraggableRoi roi = RoiCollection.GetCenterRoi(pictureBox1.Size, originalSize, 20);
         roi.IsSelected = true;
         RoiCollection.ROIs.Add(roi);
     }

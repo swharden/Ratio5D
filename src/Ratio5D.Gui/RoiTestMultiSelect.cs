@@ -21,7 +21,7 @@ public partial class RoiTestMultiSelect : Form
         multiRoiSelect1.SetImage(values);
         multiRoiSelect1.RoiCollection.SelectedRoiChanged += (object? sender, DataRoi roi) =>
         {
-            Text = $"{DateTime.Now.Ticks} {roi} AVG={roi.ValuesFlat.Average()}";
+            Text = $"{DateTime.Now.Ticks} {roi} AVG={roi.Flatten().Average()}";
         };
     }
 }
