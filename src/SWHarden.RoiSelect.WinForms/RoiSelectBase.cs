@@ -1,11 +1,11 @@
-﻿using System.Windows.Forms;
+﻿using System;
 
 namespace SWHarden.RoiSelect.WinForms;
 
-public abstract class RoiSelectBase : UserControl
+public class RoiSelectBase : UserControl
 {
-    public abstract Panel Panel { get; }
-    public abstract PictureBox PictureBox { get; }
+    public virtual Panel Panel { get; } = new Panel();
+    public virtual PictureBox PictureBox { get; } = new PictureBox();
 
     public readonly DraggableRoiCollection RoiCollection = new();
 
@@ -14,10 +14,13 @@ public abstract class RoiSelectBase : UserControl
     private bool UpdateNeeded = false;
     public int RenderCount { get; private set; }
 
-    public void StartUpdateTimer()
+    public RoiSelectBase()
     {
-        UpdateTimer.Tick += (s, e) => UpdateImageIfNeeded();
-        UpdateTimer.Start();
+        if (!DesignMode)
+        {
+            UpdateTimer.Tick += (s, e) => UpdateImageIfNeeded();
+            UpdateTimer.Start();
+        }
     }
 
     public void UpdateSize()
@@ -26,6 +29,7 @@ public abstract class RoiSelectBase : UserControl
         int minEdge = Math.Min(Panel.Width, Panel.Height);
         PictureBox.Size = new(minEdge, minEdge);
         PictureBox.Location = new(0, 0);
+        RoiCollection.SnapAfterResizing(PictureBox.Size);
         UpdateImage();
     }
 
@@ -48,23 +52,21 @@ public abstract class RoiSelectBase : UserControl
     public void SetImage(Bitmap bmp)
     {
         RoiCollection.SetImage(bmp);
-        AddSingleRoi(bmp.Size);
         UpdateImage();
     }
 
     public void SetImage(double[,] values)
     {
         RoiCollection.SetImage(values);
-        AddSingleRoi(new SizeF(values.GetLength(1), values.GetLength(0)));
         UpdateImage();
     }
 
-    public void AddSingleRoi(SizeF originalSize)
+    public void AddCenterRoi()
     {
         if (RoiCollection is null || RoiCollection.RoiBitmap is null)
             return;
 
-        RoiCollection.ROIs.Clear();
+        SizeF originalSize = RoiCollection.RoiBitmap.OriginalSize;
         DraggableRoi roi = RoiCollection.GetCenterRoi(PictureBox.Size, originalSize, 20);
         roi.IsSelected = true;
         RoiCollection.ROIs.Add(roi);

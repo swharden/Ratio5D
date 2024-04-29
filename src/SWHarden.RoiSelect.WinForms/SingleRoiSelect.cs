@@ -21,7 +21,5 @@ public class SingleRoiSelect : RoiSelectBase
             if (movedSomething)
                 UpdateImage();
         };
-
-        StartUpdateTimer();
     }
 }

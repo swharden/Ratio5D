@@ -56,27 +56,31 @@ partial class Form2
         // nudB1
         // 
         nudB1.Dock = DockStyle.Fill;
-        nudB1.Location = new Point(3, 3);
+        nudB1.Location = new Point(2, 2);
+        nudB1.Margin = new Padding(2, 2, 2, 2);
         nudB1.Name = "nudB1";
-        nudB1.Size = new Size(86, 31);
+        nudB1.Size = new Size(60, 23);
         nudB1.TabIndex = 0;
         nudB1.Value = new decimal(new int[] { 7, 0, 0, 0 });
         // 
         // nudB2
         // 
         nudB2.Dock = DockStyle.Fill;
-        nudB2.Location = new Point(95, 3);
+        nudB2.Location = new Point(66, 2);
+        nudB2.Margin = new Padding(2, 2, 2, 2);
         nudB2.Name = "nudB2";
-        nudB2.Size = new Size(86, 31);
+        nudB2.Size = new Size(61, 23);
         nudB2.TabIndex = 4;
         nudB2.Value = new decimal(new int[] { 12, 0, 0, 0 });
         // 
         // groupBox1
         // 
         groupBox1.Controls.Add(tableLayoutPanel1);
-        groupBox1.Location = new Point(1093, 15);
+        groupBox1.Location = new Point(765, 9);
+        groupBox1.Margin = new Padding(2, 2, 2, 2);
         groupBox1.Name = "groupBox1";
-        groupBox1.Size = new Size(190, 67);
+        groupBox1.Padding = new Padding(2, 2, 2, 2);
+        groupBox1.Size = new Size(133, 40);
         groupBox1.TabIndex = 6;
         groupBox1.TabStop = false;
         groupBox1.Text = "Baseline Frames";
@@ -89,19 +93,22 @@ partial class Form2
         tableLayoutPanel1.Controls.Add(nudB1, 0, 0);
         tableLayoutPanel1.Controls.Add(nudB2, 1, 0);
         tableLayoutPanel1.Dock = DockStyle.Fill;
-        tableLayoutPanel1.Location = new Point(3, 27);
+        tableLayoutPanel1.Location = new Point(2, 18);
+        tableLayoutPanel1.Margin = new Padding(2, 2, 2, 2);
         tableLayoutPanel1.Name = "tableLayoutPanel1";
         tableLayoutPanel1.RowCount = 1;
         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        tableLayoutPanel1.Size = new Size(184, 37);
+        tableLayoutPanel1.Size = new Size(129, 20);
         tableLayoutPanel1.TabIndex = 0;
         // 
         // groupBox2
         // 
         groupBox2.Controls.Add(tableLayoutPanel2);
-        groupBox2.Location = new Point(1327, 15);
+        groupBox2.Location = new Point(929, 9);
+        groupBox2.Margin = new Padding(2, 2, 2, 2);
         groupBox2.Name = "groupBox2";
-        groupBox2.Size = new Size(190, 67);
+        groupBox2.Padding = new Padding(2, 2, 2, 2);
+        groupBox2.Size = new Size(133, 40);
         groupBox2.TabIndex = 7;
         groupBox2.TabStop = false;
         groupBox2.Text = "Measure Frames";
@@ -114,61 +121,69 @@ partial class Form2
         tableLayoutPanel2.Controls.Add(nudM1, 0, 0);
         tableLayoutPanel2.Controls.Add(nudM2, 1, 0);
         tableLayoutPanel2.Dock = DockStyle.Fill;
-        tableLayoutPanel2.Location = new Point(3, 27);
+        tableLayoutPanel2.Location = new Point(2, 18);
+        tableLayoutPanel2.Margin = new Padding(2, 2, 2, 2);
         tableLayoutPanel2.Name = "tableLayoutPanel2";
         tableLayoutPanel2.RowCount = 1;
         tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        tableLayoutPanel2.Size = new Size(184, 37);
+        tableLayoutPanel2.Size = new Size(129, 20);
         tableLayoutPanel2.TabIndex = 0;
         // 
         // nudM1
         // 
         nudM1.Dock = DockStyle.Fill;
-        nudM1.Location = new Point(3, 3);
+        nudM1.Location = new Point(2, 2);
+        nudM1.Margin = new Padding(2, 2, 2, 2);
         nudM1.Name = "nudM1";
-        nudM1.Size = new Size(86, 31);
+        nudM1.Size = new Size(60, 23);
         nudM1.TabIndex = 0;
         nudM1.Value = new decimal(new int[] { 15, 0, 0, 0 });
         // 
         // nudM2
         // 
         nudM2.Dock = DockStyle.Fill;
-        nudM2.Location = new Point(95, 3);
+        nudM2.Location = new Point(66, 2);
+        nudM2.Margin = new Padding(2, 2, 2, 2);
         nudM2.Name = "nudM2";
-        nudM2.Size = new Size(86, 31);
+        nudM2.Size = new Size(61, 23);
         nudM2.TabIndex = 4;
         nudM2.Value = new decimal(new int[] { 45, 0, 0, 0 });
         // 
         // formsPlot1
         // 
         formsPlot1.DisplayScale = 1.5F;
-        formsPlot1.Location = new Point(983, 85);
+        formsPlot1.Location = new Point(688, 51);
+        formsPlot1.Margin = new Padding(2, 2, 2, 2);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(546, 332);
+        formsPlot1.Size = new Size(382, 199);
         formsPlot1.TabIndex = 8;
         // 
         // formsPlot2
         // 
         formsPlot2.DisplayScale = 1.5F;
-        formsPlot2.Location = new Point(983, 423);
+        formsPlot2.Location = new Point(688, 254);
+        formsPlot2.Margin = new Padding(2, 2, 2, 2);
         formsPlot2.Name = "formsPlot2";
-        formsPlot2.Size = new Size(546, 336);
+        formsPlot2.Size = new Size(382, 202);
         formsPlot2.TabIndex = 9;
         // 
         // formsPlot3
         // 
         formsPlot3.DisplayScale = 1.5F;
-        formsPlot3.Location = new Point(983, 765);
+        formsPlot3.Location = new Point(688, 459);
+        formsPlot3.Margin = new Padding(2, 2, 2, 2);
         formsPlot3.Name = "formsPlot3";
-        formsPlot3.Size = new Size(546, 289);
+        formsPlot3.Size = new Size(382, 173);
         formsPlot3.TabIndex = 10;
         // 
         // groupBox3
         // 
         groupBox3.Controls.Add(lblFolder);
-        groupBox3.Location = new Point(12, 12);
+        groupBox3.Location = new Point(8, 7);
+        groupBox3.Margin = new Padding(2, 2, 2, 2);
         groupBox3.Name = "groupBox3";
-        groupBox3.Size = new Size(965, 67);
+        groupBox3.Padding = new Padding(2, 2, 2, 2);
+        groupBox3.Size = new Size(676, 40);
         groupBox3.TabIndex = 13;
         groupBox3.TabStop = false;
         groupBox3.Text = "Folder";
@@ -176,24 +191,26 @@ partial class Form2
         // lblFolder
         // 
         lblFolder.AutoSize = true;
-        lblFolder.Location = new Point(15, 30);
+        lblFolder.Location = new Point(10, 18);
+        lblFolder.Margin = new Padding(2, 0, 2, 0);
         lblFolder.Name = "lblFolder";
-        lblFolder.Size = new Size(59, 25);
+        lblFolder.Size = new Size(38, 15);
         lblFolder.TabIndex = 0;
         lblFolder.Text = "label1";
         // 
-        // singleRoiSelect1
+        // roiSelect
         // 
-        roiSelect.Location = new Point(12, 85);
-        roiSelect.Name = "singleRoiSelect1";
-        roiSelect.Size = new Size(965, 965);
+        roiSelect.Location = new Point(8, 51);
+        roiSelect.Margin = new Padding(2, 2, 2, 2);
+        roiSelect.Name = "roiSelect";
+        roiSelect.Size = new Size(676, 579);
         roiSelect.TabIndex = 14;
         // 
         // Form2
         // 
-        AutoScaleDimensions = new SizeF(10F, 25F);
+        AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1548, 1069);
+        ClientSize = new Size(1084, 641);
         Controls.Add(roiSelect);
         Controls.Add(groupBox3);
         Controls.Add(formsPlot3);
@@ -201,7 +218,9 @@ partial class Form2
         Controls.Add(formsPlot1);
         Controls.Add(groupBox2);
         Controls.Add(groupBox1);
+        Margin = new Padding(2, 2, 2, 2);
         Name = "Form2";
+        StartPosition = FormStartPosition.CenterScreen;
         Text = "Form2";
         ((System.ComponentModel.ISupportInitialize)nudB1).EndInit();
         ((System.ComponentModel.ISupportInitialize)nudB2).EndInit();

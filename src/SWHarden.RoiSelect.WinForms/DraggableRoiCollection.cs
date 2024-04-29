@@ -2,6 +2,7 @@
 
 public class DraggableRoiCollection()
 {
+    // TODO: these should be data ROIs
     public readonly List<DraggableRoi> ROIs = [];
     public RoiBitmap? RoiBitmap { get; set; } = null;
 
@@ -64,6 +65,9 @@ public class DraggableRoiCollection()
     {
         foreach (DraggableRoi roi in ROIs)
         {
+            if (!roi.IsSelected) // only interact with selected ROIs
+                continue;
+
             Cursor? roiCursor = roi.GetCursor(x, y);
 
             if (roiCursor is not null)
@@ -71,6 +75,18 @@ public class DraggableRoiCollection()
         }
 
         return Cursors.Arrow;
+    }
+
+    public void SnapAfterResizing(Size newSize)
+    {
+        if (RoiBitmap is null)
+            return;
+
+        RoiBitmap.OutputImageSize = newSize;
+        foreach (var roi in ROIs)
+        {
+            roi.Snap(RoiBitmap.ScaleX, RoiBitmap!.ScaleY);
+        }
     }
 
     public bool MouseMove(float x, float y)

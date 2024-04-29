@@ -1,5 +1,7 @@
 ﻿using ScottPlot;
 
+using SWHarden.RoiSelect.WinForms;
+
 namespace Ratio5D.Tests;
 
 internal class AnalysisTests
@@ -7,15 +9,17 @@ internal class AnalysisTests
     [Test]
     public void Test_Analysis_Workflow()
     {
-        TimeRange baselineRange = new(0.25, 0.75);
-        TimeRange measureRange = new(1, 3);
+        Ratio5D.Core.IndexRange baselineRange = new(10, 15);
+        Ratio5D.Core.IndexRange measureRange = new(20, 40);
+
+        DataRoi roi = new(new System.Drawing.Rectangle(2, 3, 4, 5), new double[,] { });
 
         TSeriesFolder ts = Core.SampleData.TSeriesFolder;
-        AfuData5D afuData = ts.GetAfuData();
+        AfuData5D afuData = ts.GetAfuData(roi);
         DffCurve[] sweeps = afuData.GetSweeps(baselineRange);
 
         Plot plot1 = new();
-        Plotting.PlotAfuCurves(plot1, sweeps);
+        Plotting.PlotAfuCurves(plot1, sweeps, baselineRange, measureRange);
         plot1.SavePng("PlotAfuCurves.png", 600, 400).LaunchFile();
 
         Plot plot2 = new();

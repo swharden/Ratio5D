@@ -1,4 +1,5 @@
 ﻿namespace Ratio5D.Gui;
+
 public partial class RoiTestSingleSelect : Form
 {
     public RoiTestSingleSelect()

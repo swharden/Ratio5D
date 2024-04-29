@@ -8,7 +8,7 @@ public class RoiBitmap : IDisposable
     private Bitmap OriginalImage { get; }
     private ImageData ImageData { get; }
 
-    public Size OutputImageSize;
+    public Size OutputImageSize { get; set; }
 
     public int OriginalWidth => OriginalImage.Width;
     public int OriginalHeight => OriginalImage.Height;

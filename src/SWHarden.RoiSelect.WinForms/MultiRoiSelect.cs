@@ -1,67 +1,18 @@
 ﻿namespace SWHarden.RoiSelect.WinForms;
 
-public partial class MultiRoiSelect : UserControl
+public partial class MultiRoiSelect : RoiSelectBase
 {
-    public readonly DraggableRoiCollection RoiCollection = new();
-
-    readonly System.Windows.Forms.Timer UpdateTimer = new() { Interval = 20 };
-    public int RenderCount { get; private set; }
-
-    public bool UpdateNeeded = false;
+    public override Panel Panel => panel1;
+    public override PictureBox PictureBox => pictureBox1;
 
     public MultiRoiSelect()
     {
         InitializeComponent();
 
-        listBox1.SelectedIndexChanged += (s, e) =>
-        {
-            for (int i = 0; i < RoiCollection.ROIs.Count; i++)
-                RoiCollection.ROIs[i].IsSelected = listBox1.SelectedIndices.Contains(i);
-
-            UpdateImage();
-        };
-
-        SizeChanged += (s, e) =>
-        {
-            // TODO: support non-square images
-            int minEdge = Math.Min(panel1.Width, panel1.Height);
-            pictureBox1.Size = new(minEdge, minEdge);
-            pictureBox1.Location = new(0, 0);
-            UpdateImage();
-        };
-
-        btnAdd.Click += (s, e) =>
-        {
-            if (RoiCollection is null || RoiCollection.RoiBitmap is null)
-                return;
-
-            DraggableRoi roi = RoiCollection.GetRandomRoi();
-            RoiCollection.ROIs.Add(roi);
-            listBox1.Items.Add($"ROI #{RoiCollection.ROIs.Count}");
-            listBox1.SelectedIndex = listBox1.Items.Count - 1;
-
-            RectangleF dataRect2 = new(1, 1, 1, 1);
-            DataRoi roi2 = RoiCollection.RoiBitmap.GetDataRoi(dataRect2);
-            RoiCollection.SelectedRoiChanged.Invoke(this, roi2);
-        };
-
-        btnDelete.Click += (s, e) =>
-        {
-            List<int> indices = [];
-            foreach (int index in listBox1.SelectedIndices)
-                indices.Add(index);
-            indices.Reverse();
-
-            foreach (int index in indices)
-            {
-                listBox1.Items.RemoveAt(index);
-                RoiCollection.ROIs.RemoveAt(index);
-            }
-        };
-
-        pictureBox1.MouseDown += (s, e) => RoiCollection.MouseDown(e.X, e.Y);
-        pictureBox1.MouseUp += (s, e) => RoiCollection.MouseUp(e.X, e.Y);
-        pictureBox1.MouseMove += (s, e) =>
+        SizeChanged += (s, e) => UpdateSize();
+        PictureBox.MouseDown += (s, e) => RoiCollection.MouseDown(e.X, e.Y);
+        PictureBox.MouseUp += (s, e) => RoiCollection.MouseUp(e.X, e.Y);
+        PictureBox.MouseMove += (s, e) =>
         {
             bool movedSomething = RoiCollection.MouseMove(e.X, e.Y);
             Cursor = RoiCollection.GetCursor(e.X, e.Y);
@@ -69,35 +20,34 @@ public partial class MultiRoiSelect : UserControl
                 UpdateImage();
         };
 
-        UpdateTimer.Tick += (s, e) => UpdateImageIfNeeded();
-        UpdateTimer.Start();
-    }
+        btnAdd.Click += (s, e) =>
+        {
+            AddCenterRoi();
+            listView1.Items.Add($"Roi #{RoiCollection.ROIs.Count}");
+            for (int i = 0; i < listView1.Items.Count; i++)
+            {
+                listView1.Items[i].Selected = i == listView1.Items.Count - 1;
+            }
+        };
 
-    public void SetImage(Bitmap bmp)
-    {
-        RoiCollection.SetImage(bmp);
-        UpdateImage();
-    }
+        btnDelete.Click += (s, e) =>
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
 
-    public void SetImage(double[,] values)
-    {
-        RoiCollection.SetImage(values);
-        UpdateImage();
-    }
+            int index = listView1.SelectedItems[0].Index;
+            RoiCollection.ROIs.RemoveAt(index);
+            listView1.Items.RemoveAt(index);
+        };
 
-    private void UpdateImage()
-    {
-        UpdateNeeded = true;
-    }
+        listView1.SelectedIndexChanged += (s, e) =>
+        {
+            for (int i = 0; i < listView1.Items.Count; i++)
+            {
+                RoiCollection.ROIs[i].IsSelected = listView1.Items[i].Selected;
+            }
 
-    private void UpdateImageIfNeeded()
-    {
-        if (!UpdateNeeded)
-            return;
-        UpdateNeeded = false;
-
-        Image? oldImage = pictureBox1.Image;
-        pictureBox1.Image = RoiCollection.GetBitmap(pictureBox1.Size);
-        oldImage?.Dispose();
+            UpdateImage();
+        };
     }
 }

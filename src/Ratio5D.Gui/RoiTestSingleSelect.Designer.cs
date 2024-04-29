@@ -36,17 +36,20 @@ partial class RoiTestSingleSelect
         singleRoiSelect1.BackColor = SystemColors.ControlDark;
         singleRoiSelect1.Dock = DockStyle.Fill;
         singleRoiSelect1.Location = new Point(0, 0);
+        singleRoiSelect1.Margin = new Padding(2, 2, 2, 2);
         singleRoiSelect1.Name = "singleRoiSelect1";
-        singleRoiSelect1.Size = new Size(800, 450);
+        singleRoiSelect1.Size = new Size(560, 270);
         singleRoiSelect1.TabIndex = 0;
         // 
         // RoiTestSingleSelect
         // 
-        AutoScaleDimensions = new SizeF(10F, 25F);
+        AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(800, 450);
+        ClientSize = new Size(560, 270);
         Controls.Add(singleRoiSelect1);
+        Margin = new Padding(2, 2, 2, 2);
         Name = "RoiTestSingleSelect";
+        StartPosition = FormStartPosition.CenterScreen;
         Text = "RoiTestSingleSelect";
         ResumeLayout(false);
     }

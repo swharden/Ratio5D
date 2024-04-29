@@ -35,26 +35,30 @@ partial class RoiTestMultiSelect
         // multiRoiSelect1
         // 
         multiRoiSelect1.Location = new Point(0, 0);
+        multiRoiSelect1.Margin = new Padding(1, 1, 1, 1);
         multiRoiSelect1.Name = "multiRoiSelect1";
-        multiRoiSelect1.Size = new Size(1030, 748);
+        multiRoiSelect1.Size = new Size(721, 449);
         multiRoiSelect1.TabIndex = 0;
         // 
         // formsPlot1
         // 
         formsPlot1.DisplayScale = 1.5F;
-        formsPlot1.Location = new Point(1036, 12);
+        formsPlot1.Location = new Point(725, 7);
+        formsPlot1.Margin = new Padding(2, 2, 2, 2);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(676, 724);
+        formsPlot1.Size = new Size(473, 434);
         formsPlot1.TabIndex = 1;
         // 
-        // RoiTest
+        // RoiTestMultiSelect
         // 
-        AutoScaleDimensions = new SizeF(10F, 25F);
+        AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1724, 748);
+        ClientSize = new Size(1207, 449);
         Controls.Add(formsPlot1);
         Controls.Add(multiRoiSelect1);
-        Name = "RoiTest";
+        Margin = new Padding(2, 2, 2, 2);
+        Name = "RoiTestMultiSelect";
+        StartPosition = FormStartPosition.CenterScreen;
         Text = "RoiTest";
         ResumeLayout(false);
     }
