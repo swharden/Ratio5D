@@ -44,7 +44,7 @@ public partial class Form2 : Form
         if (!UpdateNeeded && !force)
             return;
 
-        DataRoi roi = roiSelect.GetSingleDataRoi();
+        DataRoi roi = roiSelect.GetDataRoi(0);
         Text = roi.ToString();
 
         AfuData5D data = TS.GetAfuData(roi);
