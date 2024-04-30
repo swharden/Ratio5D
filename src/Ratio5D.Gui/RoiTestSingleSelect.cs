@@ -16,5 +16,6 @@ public partial class RoiTestSingleSelect : Form
                 values[y, x] = Random.Shared.NextDouble();
 
         singleRoiSelect1.SetImage(values);
+        singleRoiSelect1.AddCenterRoi();
     }
 }

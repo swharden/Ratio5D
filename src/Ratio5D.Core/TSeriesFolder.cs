@@ -13,6 +13,7 @@ public class TSeriesFolder
     public int Sweeps { get; }
     public int FramesPerSweep { get; }
     public double FramePeriod { get; }
+    public double[] FrameTimes { get; }
     public const int ChannelsPerFrame = 2;
     private Action<int, int, string>? ImageLoadedAction { get; }
 
@@ -35,6 +36,7 @@ public class TSeriesFolder
         Sweeps = GetSequenceCount(doc);
         FramesPerSweep = GetFrameCount(doc);
         FramePeriod = GetFramePeriod(doc);
+        FrameTimes = Enumerable.Range(0, FramesPerSweep).Select(x=>x*FramePeriod).ToArray();
         Images = LoadImageTiffs();
         ImageLoadedAction?.Invoke(TifFiles.Length, TifFiles.Length, $"Loaded {TifFiles.Length} images");
     }

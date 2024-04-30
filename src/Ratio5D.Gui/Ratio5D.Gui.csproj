@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Ratio5D.Core\Ratio5D.Core.csproj" />
+        <ProjectReference Include="..\SWHarden.CsvBuilder\SWHarden.CsvBuilder.csproj" />
         <ProjectReference Include="..\SWHarden.RoiSelect.WinForms\SWHarden.RoiSelect.WinForms.csproj" />
     </ItemGroup>
 
