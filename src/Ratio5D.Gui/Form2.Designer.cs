@@ -44,6 +44,7 @@ partial class Form2
         btnSave = new Button();
         cbSubtract = new CheckBox();
         singleRoiSelect1 = new SWHarden.RoiSelect.WinForms.SingleRoiSelect();
+        progressBar1 = new ProgressBar();
         ((System.ComponentModel.ISupportInitialize)nudB1).BeginInit();
         ((System.ComponentModel.ISupportInitialize)nudB2).BeginInit();
         groupBox1.SuspendLayout();
@@ -212,11 +213,19 @@ partial class Form2
         singleRoiSelect1.Size = new Size(966, 968);
         singleRoiSelect1.TabIndex = 17;
         // 
+        // progressBar1
+        // 
+        progressBar1.Location = new Point(12, 85);
+        progressBar1.Name = "progressBar1";
+        progressBar1.Size = new Size(965, 34);
+        progressBar1.TabIndex = 18;
+        // 
         // Form2
         // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1562, 1079);
+        Controls.Add(progressBar1);
         Controls.Add(singleRoiSelect1);
         Controls.Add(cbSubtract);
         Controls.Add(btnSave);
@@ -261,4 +270,5 @@ partial class Form2
     private Button btnSave;
     private CheckBox cbSubtract;
     private SWHarden.RoiSelect.WinForms.SingleRoiSelect singleRoiSelect1;
+    private ProgressBar progressBar1;
 }

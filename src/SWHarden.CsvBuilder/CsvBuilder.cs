@@ -40,18 +40,21 @@ public class CsvBuilder
         Columns.Add(new Column(title, units, comments, data));
     }
 
-    public void SaveAs(string filePath)
+    public void SaveAs(string filePath, bool titles = true, bool units = true, bool comments = true)
     {
         StringBuilder sb = new();
 
         foreach(string line in HeaderLines)
-        {
             sb.AppendLine($"# {line}");
-        }
 
-        sb.AppendLine(string.Join(", ", Columns.Select(x => x.Title)));
-        sb.AppendLine(string.Join(", ", Columns.Select(x => x.Units)));
-        sb.AppendLine(string.Join(", ", Columns.Select(x => x.Comments)));
+        if (titles)
+            sb.AppendLine(string.Join(", ", Columns.Select(x => x.Title)));
+
+        if (units)
+            sb.AppendLine(string.Join(", ", Columns.Select(x => x.Units)));
+
+        if (comments)
+            sb.AppendLine(string.Join(", ", Columns.Select(x => x.Comments)));
 
         int maxDataLength = Columns.Select(x => x.Data.Length).Max();
         for (int i = 0; i < maxDataLength; i++)

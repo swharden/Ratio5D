@@ -108,6 +108,11 @@ public class RoiBitmap : IDisposable
         int height = y2 - y1;
         Rectangle rect2 = new(x1, y1, width, height);
 
+        x1 = Math.Clamp(x1, 0, ImageData.Width - 1);
+        x2 = Math.Clamp(x2, 0, ImageData.Width - 1);
+        y1 = Math.Clamp(y1, 0, ImageData.Height - 1);
+        y2 = Math.Clamp(y2, 0, ImageData.Height - 1);
+
         double[,] values = ImageData.GetValues(x1, x2, y1, y2);
         return new DataRoi(rect2, values);
     }
