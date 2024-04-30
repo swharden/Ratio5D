@@ -87,7 +87,6 @@ public partial class Form2 : Form
                 Directory.CreateDirectory(saveFolder);
 
             SWHarden.CsvBuilder.CsvBuilder dffCsv = new();
-            dffCsv.AddHeaderLine($"ROI {roi}");
             dffCsv.Add("Time", "Sec", "", TS.FrameTimes);
             for (int i = 0; i < TS.Sweeps; i++)
             {
@@ -96,7 +95,20 @@ public partial class Form2 : Form
 
             string saveAs = Path.Join(saveFolder, "dff.csv");
             dffCsv.SaveAs(saveAs);
-            Debug.WriteLine(saveAs);
+
+            string json =
+                """
+                {
+                  "Version": "3.3.5",
+                  "Generated": "{{NOW}}",
+                  "Roi": "{{ROI}}"
+                }
+                """
+                .Replace("{{NOW}}", DateTime.Now.ToString())
+                .Replace("{{ROI}}", roi.ToString());
+
+            File.WriteAllText(saveAs + ".json", json);
+
 
             Clipboard.SetText($"LoadCSV \"{saveAs}\"");
 
