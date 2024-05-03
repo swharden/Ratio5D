@@ -181,9 +181,9 @@ partial class Form2
         lblFolder.AutoSize = true;
         lblFolder.Location = new Point(14, 30);
         lblFolder.Name = "lblFolder";
-        lblFolder.Size = new Size(59, 25);
+        lblFolder.Size = new Size(350, 25);
         lblFolder.TabIndex = 0;
-        lblFolder.Text = "label1";
+        lblFolder.Text = "Drop a T-Series folder here to get started...";
         // 
         // btnSave
         // 

@@ -24,7 +24,7 @@ public partial class Form2 : Form
         singleRoiSelect1.RoiCollection.SelectedRoiChanged += (s, e) => UpdatePlots();
         cbSubtract.CheckedChanged += (s, e) => UpdatePlots();
 
-        //SetFolder(Core.SampleData.TSeriesFolderPath);
+        SetFolder(Core.SampleData.TSeriesFolderPath);
         UpdateTimer.Tick += (s, e) => UpdatePlotsBlocking(false, false);
         UpdateTimer.Start();
 
@@ -46,6 +46,8 @@ public partial class Form2 : Form
             if (paths is null) return;
             SetFolder(paths.First());
         };
+
+        lblFolder.Click += (s, e) => Clipboard.SetText(lblFolder.Text);
     }
 
     void ImageLoadAction(int a, int b, string c)

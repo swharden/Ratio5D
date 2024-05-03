@@ -8,6 +8,7 @@ public class TSeriesFolder
 {
     public string Path { get; }
     public string ReferencePath => System.IO.Path.Join(Path, "References");
+    public string ProjectedBitmapFilePath => System.IO.Path.Join(ReferencePath, "projected.bmp");
     public string[] ReferenceFiles { get; }
     public string[] TifFiles { get; }
     public int Sweeps { get; }
@@ -19,7 +20,7 @@ public class TSeriesFolder
 
     private SciTIF.Image[] Images { get; }
 
-    public TSeriesFolder(string path, Action<int, int, string>? imageLoadedAction = null)
+    public TSeriesFolder(string path, Action<int, int, string>? imageLoadedAction = null, bool loadImmediately = false)
     {
         ImageLoadedAction = imageLoadedAction;
         Path = path;
@@ -36,8 +37,10 @@ public class TSeriesFolder
         Sweeps = GetSequenceCount(doc);
         FramesPerSweep = GetFrameCount(doc);
         FramePeriod = GetFramePeriod(doc);
-        FrameTimes = Enumerable.Range(0, FramesPerSweep).Select(x=>x*FramePeriod).ToArray();
-        Images = LoadImageTiffs();
+        FrameTimes = Enumerable.Range(0, FramesPerSweep).Select(x => x * FramePeriod).ToArray();
+        Images = new SciTIF.Image[TifFiles.Length];
+        if (loadImmediately)
+            PopulateImagesFromDisk();
         ImageLoadedAction?.Invoke(TifFiles.Length, TifFiles.Length, $"Loaded {TifFiles.Length} images");
     }
 
@@ -71,22 +74,18 @@ public class TSeriesFolder
         File.WriteAllBytes(saveAs, bytes);
     }
 
-    public SciTIF.Image[] LoadImageTiffs()
+    public void PopulateImagesFromDisk()
     {
         ImageLoadedAction?.Invoke(0, 0, "Loading images from TIF files...");
 
-        int imageCount = TifFiles.Length;
-        SciTIF.Image[] images = new SciTIF.Image[imageCount];
-        for (int i = 0; i < imageCount; i++)
+        for (int i = 0; i < Images.Length; i++)
         {
             string imagePath = TifFiles[i];
             string imageFilename = System.IO.Path.GetFileName(imagePath);
-            images[i] = new SciTIF.TifFile(imagePath).GetImage();
+            Images[i] = new SciTIF.TifFile(imagePath).GetImage();
             string message = $"Loading {imageFilename}";
-            ImageLoadedAction?.Invoke(i + 1, imageCount, message);
+            ImageLoadedAction?.Invoke(i + 1, Images.Length, message);
         }
-
-        return images;
     }
 
     private static int GetSequenceCount(XDocument doc)
@@ -121,6 +120,8 @@ public class TSeriesFolder
 
     public SciTIF.Image GetRedImage(int sweep, int frame)
     {
+        if (Images[0] is null)
+            PopulateImagesFromDisk();
         int sweepOffset = FramesPerSweep * ChannelsPerFrame * sweep;
         int channelOffset = 0;
         int frameOffset = frame;
@@ -129,6 +130,8 @@ public class TSeriesFolder
 
     public SciTIF.Image GetGreenImage(int sweep, int frame)
     {
+        if (Images[0] is null)
+            PopulateImagesFromDisk();
         int sweepOffset = FramesPerSweep * ChannelsPerFrame * sweep;
         int channelOffset = FramesPerSweep;
         int frameOffset = frame;
@@ -144,27 +147,35 @@ public class TSeriesFolder
         return rgb.GetBitmapBytes();
     }
 
-    public byte[] GetProjectedRedBitmapBytes()
+    public byte[] CreateProjectedRedBitmapBytes()
     {
-        List<SciTIF.Image> images = [];
+        if (Images[0] is null)
+            PopulateImagesFromDisk();
+
+        List<SciTIF.Image> redImages = [];
         for (int sweep = 0; sweep < Sweeps; sweep++)
         {
             for (int frame = 0; frame < FramesPerSweep; frame++)
             {
                 SciTIF.Image img = GetRedImage(sweep, frame);
-                images.Add(img);
+                redImages.Add(img);
             }
         }
 
-        SciTIF.ImageStack stack = new(images);
+        SciTIF.ImageStack stack = new(redImages);
 
         double scaleBy = 1 / 32.0; // difference between 8-bit and 13-bit
-        return stack.ProjectMean().ScaledBy(0, scaleBy).GetBitmapBytes();
+        byte[] bytes = stack.ProjectMean().ScaledBy(0, scaleBy).GetBitmapBytes();
+        File.WriteAllBytes(ProjectedBitmapFilePath, bytes);
+        return bytes;
     }
 
     public Bitmap GetProjectedRedBitmap()
     {
-        byte[] bytes = GetProjectedRedBitmapBytes();
+        byte[] bytes = File.Exists(ProjectedBitmapFilePath)
+            ? File.ReadAllBytes(ProjectedBitmapFilePath)
+            : CreateProjectedRedBitmapBytes();
+
         using MemoryStream ms = new(bytes);
         Bitmap bmp = new(ms);
         return bmp;
