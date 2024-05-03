@@ -1,4 +1,6 @@
-﻿namespace SWHarden.RoiSelect.WinForms;
+﻿using System.Text;
+
+namespace SWHarden.RoiSelect.WinForms;
 
 public class DraggableRoiCollection()
 {
@@ -136,15 +138,5 @@ public class DraggableRoiCollection()
     public void MouseUp(float x, float y)
     {
         RoiUnderMouse?.MouseUp(x, y);
-    }
-
-    public void Load()
-    {
-
-    }
-
-    public void Save()
-    {
-
     }
 }

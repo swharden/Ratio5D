@@ -168,6 +168,7 @@ partial class Form2
         // 
         // groupBox3
         // 
+        groupBox3.Controls.Add(progressBar1);
         groupBox3.Controls.Add(lblFolder);
         groupBox3.Location = new Point(11, 12);
         groupBox3.Name = "groupBox3";
@@ -215,9 +216,9 @@ partial class Form2
         // 
         // progressBar1
         // 
-        progressBar1.Location = new Point(12, 85);
+        progressBar1.Location = new Point(692, 21);
         progressBar1.Name = "progressBar1";
-        progressBar1.Size = new Size(965, 34);
+        progressBar1.Size = new Size(268, 34);
         progressBar1.TabIndex = 18;
         // 
         // Form2
@@ -225,7 +226,6 @@ partial class Form2
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1562, 1079);
-        Controls.Add(progressBar1);
         Controls.Add(singleRoiSelect1);
         Controls.Add(cbSubtract);
         Controls.Add(btnSave);

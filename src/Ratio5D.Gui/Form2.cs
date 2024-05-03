@@ -14,7 +14,6 @@ public partial class Form2 : Form
     public Form2()
     {
         InitializeComponent();
-        progressBar1.Visible = false;
 
         nudB1.ValueChanged += (s, e) => UpdatePlots();
         nudB2.ValueChanged += (s, e) => UpdatePlots();
@@ -24,7 +23,6 @@ public partial class Form2 : Form
         singleRoiSelect1.RoiCollection.SelectedRoiChanged += (s, e) => UpdatePlots();
         cbSubtract.CheckedChanged += (s, e) => UpdatePlots();
 
-        SetFolder(Core.SampleData.TSeriesFolderPath);
         UpdateTimer.Tick += (s, e) => UpdatePlotsBlocking(false, false);
         UpdateTimer.Start();
 
@@ -48,6 +46,12 @@ public partial class Form2 : Form
         };
 
         lblFolder.Click += (s, e) => Clipboard.SetText(lblFolder.Text);
+
+        Shown += (s, e) =>
+        {
+            Application.DoEvents();
+            SetFolder(Core.SampleData.TSeriesFolderPath);
+        };
     }
 
     void ImageLoadAction(int a, int b, string c)
@@ -61,13 +65,24 @@ public partial class Form2 : Form
     void SetFolder(string folderPath)
     {
         progressBar1.Visible = true;
-        progressBar1.Value = 0;
-        TS = new TSeriesFolder(folderPath, ImageLoadAction);
+        TS = new TSeriesFolder(folderPath, ImageLoadAction, true);
+        progressBar1.Visible = false;
         singleRoiSelect1.SetImage(TS.GetProjectedRedBitmap());
         singleRoiSelect1.RoiCollection.ROIs.Clear();
-        singleRoiSelect1.AddCenterRoi();
         lblFolder.Text = folderPath;
-        progressBar1.Visible = false;
+        UpdatePlotsBlocking(true, false);
+
+        Application.DoEvents();
+        string roiFile = Path.Combine(TS.Path, "Analysis/rois.csv");
+        if (File.Exists(roiFile))
+        {
+            singleRoiSelect1.LoadRois(roiFile);
+        }
+        else
+        {
+            singleRoiSelect1.AddCenterRoi();
+        }
+
         UpdatePlotsBlocking(true, false);
     }
 
@@ -119,7 +134,8 @@ public partial class Form2 : Form
                 Directory.CreateDirectory(saveFolder);
 
             SaveDffCsv(saveFolder, sweeps, roi);
-            SavePointsCsv(saveFolder, sweeps, roi, measurementRange);
+            SaveBySweepCsv(saveFolder, sweeps, roi, measurementRange);
+            singleRoiSelect1.SaveRois(saveFolder);
         }
 
         UpdateNeeded = false;
@@ -156,17 +172,19 @@ public partial class Form2 : Form
         Clipboard.SetText($"LoadCSV \"{saveAs}\"");
     }
 
-    private void SavePointsCsv(string saveFolder, DffCurve[] sweeps, DataRoi roi, IndexRange measureRange)
+    private void SaveBySweepCsv(string saveFolder, DffCurve[] sweeps, DataRoi roi, IndexRange measureRange)
     {
         if (TS is null)
             return;
 
         double[] xs = Enumerable.Range(0, sweeps.Length).Select(x => (double)x).ToArray();
         double[] meansBySweep = sweeps.Select(x => x.GetMean(measureRange)).ToArray();
+        double[] maxBySweep = sweeps.Select(x => x.GetMax(measureRange)).ToArray();
 
         SWHarden.CsvBuilder.CsvBuilder dffCsv = new();
         dffCsv.Add("Sweep", "#", "", xs);
         dffCsv.Add("Mean", "dFF", "", meansBySweep);
+        dffCsv.Add("Max", "dFF", "", maxBySweep);
 
         string tSeriesName = Path.GetFileName(TS.Path);
         string saveAs = Path.Join(saveFolder, $"mean-{tSeriesName}.csv");

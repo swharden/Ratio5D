@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace SWHarden.RoiSelect.WinForms;
 
@@ -70,6 +71,7 @@ public class RoiSelectBase : UserControl
         DraggableRoi roi = RoiCollection.GetCenterRoi(PictureBox.Size, originalSize, 20);
         roi.IsSelected = true;
         RoiCollection.ROIs.Add(roi);
+        UpdateImage();
     }
 
     public DataRoi GetDataRoi(int roiIndex)
@@ -78,5 +80,61 @@ public class RoiSelectBase : UserControl
             throw new InvalidOperationException();
 
         return RoiCollection.ROIs[roiIndex].GetDataRoi(PictureBox.Size, RoiCollection.RoiBitmap.OriginalSize);
+    }
+
+    public void AddDataRoi(DataRoi roi)
+    {
+        if (RoiCollection is null || RoiCollection.RoiBitmap is null)
+            throw new InvalidOperationException();
+
+        float scaleX = (float)PictureBox.Size.Width / RoiCollection.RoiBitmap.OriginalSize.Width;
+        float scaleY = (float)PictureBox.Size.Height / RoiCollection.RoiBitmap.OriginalSize.Height;
+
+        DraggableRoi roi2 = new(
+            x1: roi.Rect.Left * scaleX,
+            x2: roi.Rect.Right * scaleY,
+            y1: roi.Rect.Bottom * scaleX,
+            y2: roi.Rect.Top * scaleY);
+
+        RoiCollection.ROIs.Add(roi2);
+        UpdateImage();
+    }
+
+    public void LoadRois(string file)
+    {
+        if (!File.Exists(file))
+            return;
+
+        RoiCollection.ROIs.Clear();
+        string[] lines = File.ReadAllLines(file);
+        foreach (string line in lines)
+        {
+            if (!line.StartsWith("ROI"))
+                continue;
+            string[] parts = line.Split(",");
+            int x = int.Parse(parts[1]);
+            int y = int.Parse(parts[2]);
+            int w = int.Parse(parts[3]);
+            int h = int.Parse(parts[4]);
+            Rectangle rect = new(x, y, w, h);
+            DataRoi roi = new(rect, new double[,] { });
+            AddDataRoi(roi);
+        }
+
+        RoiCollection.ROIs.First().IsSelected = true;
+        UpdateImage();
+    }
+
+    public void SaveRois(string folder)
+    {
+        StringBuilder sb = new();
+        sb.AppendLine("Name,X,Y,Width,Height");
+        for (int i = 0; i < RoiCollection.ROIs.Count; i++)
+        {
+            DataRoi roi = GetDataRoi(i);
+            sb.AppendLine($"ROI{i = 1},{roi.Rect.X},{roi.Rect.Y},{roi.Rect.Width},{roi.Rect.Height}");
+        }
+        string saveAs = Path.Join(folder, "rois.csv");
+        File.WriteAllText(saveAs, sb.ToString());
     }
 }
