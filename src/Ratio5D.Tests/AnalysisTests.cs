@@ -30,4 +30,74 @@ internal class AnalysisTests
         Plotting.PlotMeans(plot3, sweeps, measureRange);
         plot3.SavePng("PlotMeans.png", 600, 400).LaunchFile();
     }
+
+    [Test]
+    public void Test_Analysis_Report()
+    {
+        string dataFolder = @"X:\Data\zProjects\Aging Spine\data";
+        string[] roiCsvPaths = Directory.GetFiles(dataFolder, "rois.csv", SearchOption.AllDirectories);
+
+        List<string> analysisFoldersShort = [];
+        for (int i = 0; i < roiCsvPaths.Length; i += 2)
+            analysisFoldersShort.Add(Path.GetDirectoryName(roiCsvPaths[i])!);
+
+        List<string> analysisFoldersLong = [];
+        for (int i = 1; i < roiCsvPaths.Length; i += 2)
+            analysisFoldersLong.Add(Path.GetDirectoryName(roiCsvPaths[i])!);
+
+        Console.WriteLine("SHORT");
+        foreach (string folder in analysisFoldersShort)
+        {
+            string dffCsvPath = Directory.GetFiles(folder)
+                .Where(x => x.Contains("dff-TSeries-") && x.EndsWith(".csv"))
+                .Single();
+
+            Console.WriteLine(dffCsvPath);
+        }
+
+        Console.WriteLine("LONG");
+        foreach (string folder in analysisFoldersLong)
+        {
+            string dffCsvPath = Directory.GetFiles(folder)
+                .Where(x => x.Contains("dff-TSeries-") && x.EndsWith(".csv"))
+                .Single();
+
+            Console.WriteLine(dffCsvPath);
+        }
+    }
+
+    [Test]
+    public void Test_Analysis_Report2()
+    {
+        string dataFolder = @"X:\Data\zProjects\Aging Spine\data";
+        string[] roiCsvPaths = Directory.GetFiles(dataFolder, "rois.csv", SearchOption.AllDirectories);
+
+        List<string> analysisFoldersShort = [];
+        for (int i = 0; i < roiCsvPaths.Length; i += 2)
+            analysisFoldersShort.Add(Path.GetDirectoryName(roiCsvPaths[i])!);
+
+        List<string> analysisFoldersLong = [];
+        for (int i = 1; i < roiCsvPaths.Length; i += 2)
+            analysisFoldersLong.Add(Path.GetDirectoryName(roiCsvPaths[i])!);
+
+        Console.WriteLine("SHORT");
+        foreach (string folder in analysisFoldersShort)
+        {
+            string dffCsvPath = Directory.GetFiles(folder)
+                .Where(x => x.Contains("mean-TSeries-") && x.EndsWith(".csv"))
+                .Single();
+
+            Console.WriteLine(dffCsvPath);
+        }
+
+        Console.WriteLine("LONG");
+        foreach (string folder in analysisFoldersLong)
+        {
+            string dffCsvPath = Directory.GetFiles(folder)
+                .Where(x => x.Contains("mean-TSeries-") && x.EndsWith(".csv"))
+                .Single();
+
+            Console.WriteLine(dffCsvPath);
+        }
+    }
 }
